@@ -7,9 +7,6 @@ var app         = express();
 var router      = express.Router();
 
 
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
-
 var User = require('./models/lockedin');
 
 mongoose.connect('mongodb://localhost/lockedin');
