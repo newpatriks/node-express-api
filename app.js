@@ -5,13 +5,17 @@ var mongodbURL  = "mongodb://localhost/lockedin";
 var port        = process.env.PORT || 5000;
 var app         = express();
 var router      = express.Router();
-
+var uristring   = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/lockedin';
 
 var User = require('./models/lockedin');
 
-mongoose.connect('mongodb://localhost/lockedin');
-
-
+mongoose.connect(uristring, function(err, res) {
+    if (err) {
+        console.log("ERROR MONGODB");
+    }else{
+        console.log("SUCCEEDED CONNECTING MONGODB");
+    }
+});
 
 // ROUTES
 router.use(function(req,res,next) {
