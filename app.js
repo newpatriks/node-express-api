@@ -20,6 +20,7 @@ mongoose.connect(uristring, function(err, res) {
 // ROUTES
 router.use(function(req,res,next) {
     // Before the post/get call always will run this way
+    res.json(req.body);
     next();
 })
 
