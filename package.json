@@ -1,0 +1,17 @@
+{
+  "name": "node-api-rest",
+  "description": "API REST for LockedIn",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "^4.4.5",
+    "mongoose": "^3.8.12",
+    "supertest": "0.7.0",
+    "mocha": "1.11.0",
+    "body-parser": "^1.4.3"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "app.js"
+  }
+}
