@@ -3,7 +3,7 @@ var Schema      = mongoose.Schema;
 var ObjectId    = Schema.ObjectId;
 
 var userSchema = new Schema({
-    name            : {type: String, 'default' : ''},
+    name            : String,
     creationDate    : {type: Date, 'default':Date.now}
 });
 

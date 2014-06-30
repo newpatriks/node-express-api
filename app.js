@@ -39,7 +39,6 @@ router.route('/users')
             res.json({ message : 'User created' });
         });
     })
-
     .get(function(req,res) {
         User.find(function(err,users) {
             if (err)
@@ -47,33 +46,6 @@ router.route('/users')
             res.json(users);
         });
     });
-
-router.route('/users/:id_user')
-    .get(function(req,res) {
-        //User.findOne({ name : req.params.id_user }, function(err,user) {
-        User.findById(req.params.id_user, function(err,user) {
-            if (err)
-                res.send(err);
-            res.json(user);
-        });
-    })
-
-    .put(function(req,res){
-        User.findById(req.params.id_user, function(err,user) {
-            if (err)
-                res.send(err);
-
-            user.name = req.body.name;
-
-            user.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message : 'User updated' });
-            });
-        });
-    });
-
 
 // STARTUP SERVER
 app.use('/api', router);
