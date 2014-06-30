@@ -9,6 +9,10 @@ var uristring   = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongod
 
 var User = require('./models/lockedin');
 
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
 mongoose.connect(uristring, function(err, res) {
     if (err) {
         console.log("ERROR MONGODB");
