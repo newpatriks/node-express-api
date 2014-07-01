@@ -22,6 +22,14 @@ mongoose.connect(uristring, function(err, res) {
 });
 
 // ROUTES
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
+
 router.use(function(req,res,next) {
     // Before the post/get call always will run this way
     next();
@@ -29,12 +37,6 @@ router.use(function(req,res,next) {
 
 router.get('/', function(req,res) {
     res.send({ 'version' : '0.0.1' });
-});
-
-router.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
 });
 
 router.route('/users')
