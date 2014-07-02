@@ -32,7 +32,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-require('./app/routes.js')(router, passport);
 
 // ROUTES
 app.all('*', function(req, res, next) {
@@ -41,7 +40,7 @@ app.all('*', function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
-
+require('./app/routes.js')(router, passport);
 
 
 // STARTUP SERVER
