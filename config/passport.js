@@ -1,11 +1,12 @@
 // load all the things we need
-var fbStrategy      = require("passport-facebook").Strategy;
+var fbStrategy  = require("passport-facebook").Strategy;
 
 // load up the user model
-var User                = require('../app/models/user');
+var User        = require('../app/models/user');
 
 // load the auth variables
-var configAuth = require('./auth');
+var url         = process.env.APP_URI || 'http://localhost:5000';
+var configAuth  = require('./auth')(url);
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
