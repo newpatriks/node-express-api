@@ -11,6 +11,16 @@ module.exports = function(router, passport) {
     })
 
     // =====================================
+    // LOGIN ===============================
+    // =====================================
+    // show the login form
+    router.get('/login', function(req, res) {
+        
+        // render the page and pass in any flash data if it exists
+        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+    });
+
+    // =====================================
     // LOGOUT ==============================
     // =====================================
     router.get('/logout', function(req, res) {
