@@ -9,8 +9,8 @@ module.exports = function(url){
         },
 
         'twitterAuth' : {
-            'consumerKey'   : 'your-consumer-key-here',
-            'consumerSecret': 'your-client-secret-here',
+            'consumerKey'   : 'XU0grp4YAhriQikdLk6nfL4qs',
+            'consumerSecret': 'XiKiOtGgCYN5mHgC9vVrozq6A2383pzETCcLaWLos7TfKrljUw',
             'callbackURL'   : url+'/api/auth/twitter/callback'
         },
 

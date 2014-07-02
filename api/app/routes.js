@@ -28,6 +28,10 @@ module.exports = function(router, passport) {
         res.redirect('/');
     });
 
+
+    // =====================================
+    // USERS  ==============================
+    // =====================================
     router.route('/users/:id_user')
         .get(function(req,res) {
             User.findById(req.params.id_user, function(err, user) {
@@ -79,6 +83,19 @@ module.exports = function(router, passport) {
             failureRedirect : '/'
         })
     );
+
+    // =====================================
+    // TWITTER ROUTES ======================
+    // =====================================
+    // route for twitter authentication and login
+    router.get('/auth/twitter', passport.authenticate('twitter'));
+
+    // handle the callback after twitter has authenticated the user
+    router.get('/auth/twitter/callback',
+        passport.authenticate('twitter', {
+            successRedirect : '/profile',
+            failureRedirect : '/'
+        }));
 
 };
 

@@ -46,7 +46,7 @@ require('./app/routes.js')(router, passport);
 
 
 // STARTUP SERVER
-app.use('/api', router);
+app.use('/', router);
 app.listen(port, function() {
     console.log("Listening on port number: ", port);
 });
