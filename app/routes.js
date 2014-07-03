@@ -38,6 +38,15 @@ module.exports = function(router, passport) {
         })
         .put(function(req,res) {
             // UPDATE A USER
+        })
+        .delete(function(req,res) {
+            User.remove({
+                _id : req.params.id_user
+            }, function(err,user) {
+                if (err)
+                    res.send(err);
+                res.json({ message : 'User deleted '});
+            });
         });
 
 
@@ -80,6 +89,71 @@ module.exports = function(router, passport) {
         })
     );
 
+    // =====================================
+    // TWITTER ROUTES ======================
+    // =====================================
+    // route for twitter authentication and login
+    router.get('/auth/twitter', passport.authenticate('twitter'));
+
+    // handle the callback after twitter has authenticated the user
+    router.get('/auth/twitter/callback',
+        passport.authenticate('twitter', {
+            successRedirect : '/api/status',
+            failureRedirect : '/'
+        }));
+
+    // =============================================================================
+    // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
+    // =============================================================================
+
+    // facebook -------------------------------
+
+    // send to facebook to do the authentication
+    router.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
+
+    // handle the callback after facebook has authorized the user
+    router.get('/connect/facebook/callback',
+        passport.authorize('facebook', {
+            successRedirect : '/api/status',
+            failureRedirect : '/'
+        }));
+
+    // twitter --------------------------------
+
+    // send to twitter to do the authentication
+    router.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
+
+    // handle the callback after twitter has authorized the user
+    router.get('/connect/twitter/callback',
+        passport.authorize('twitter', {
+            successRedirect : '/status',
+            failureRedirect : '/'
+        }));
+
+    // =============================================================================
+    // UNLINK ACCOUNTS =============================================================
+    // =============================================================================
+    // used to unlink accounts. for social accounts, just remove the token
+    // for local account, remove email and password
+    // user account will stay active in case they want to reconnect in the future
+
+    // facebook -------------------------------
+    router.get('/unlink/facebook', function(req, res) {
+        var user            = req.user;
+        user.facebook.token = undefined;
+        user.save(function(err) {
+            res.redirect('/status');
+        });
+    });
+
+    // twitter --------------------------------
+    router.get('/unlink/twitter', function(req, res) {
+        var user           = req.user;
+        user.twitter.token = undefined;
+        user.save(function(err) {
+           res.redirect('/status');
+        });
+    });
 };
 
 // route middleware to make sure a user is logged in
