@@ -1,0 +1,13 @@
+<div class="content has-header padding">
+<form ng-submit="login(credentials)" class="list list-inset" novalidate>
+  <label class="item item-input">
+    <input type="text" placeholder="{{social}} username" ng-model="credentials.username">
+  </label>
+  <label class="item item-input">
+    <input type="password" placeholder="{{social}} password" ng-model="credentials.password">
+  </label>
+<button type="submit" class="button button-block button-dark">
+    Get lockedIn via {{social}}
+</button>
+</form>
+</div>

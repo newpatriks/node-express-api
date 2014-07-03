@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="AppCtrl">
+<head>
+    <title>LockedIn || Radio 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="assets/js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="assets/js/lib/angular-resource.js"></script>
+    <script type="text/javascript" src="assets/js/lib/angular-route.min.js"></script>
+    <script type="text/javascript" src="assets/js/lib/angular-local-storage.js"></script>
+    <script type="text/javascript" src="assets/js/lib/jquery.js"></script>
+
+    <script type="text/javascript" src="assets/js/controllers/app.js"></script>
+    <script type="text/javascript" src="assets/js/controllers/login.js"></script>
+    <script type="text/javascript" src="assets/js/controllers/profile.js"></script>
+    <script type="text/javascript" src="assets/js/controllers/lockedin.js"></script>
+
+
+    <script type="text/javascript" src="assets/js/global.js"></script>
+    <script type="text/javascript" src="assets/js/services.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/ionic.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link href="http://code.ionicframework.com/1.0.0-beta.6/css/ionic.css" rel="stylesheet">
+    <link href="assets/css/swipe.css" rel="stylesheet">
+    <!-- <script src="assets/js/lib/ionic.bundle.js"></script>
+    <script src="assets/js/lib//ionic.swipecards.js"></script> -->
+</head>
+<body ng-controller="GlobalCtrl">
+<div class="bar bar-header">
+    <a href="#/profile" class="button icon ion-gear-a"></a>
+</div>
+    <div class="container" ng-view>
+        
+    </div>
+    <div class="bar bar-footer bar-light">
+      <div class="title">Footer</div>
+    </div>
+</body>
+</html>

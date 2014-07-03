@@ -1,0 +1,26 @@
+{
+  "name": "node-api-rest",
+  "description": "API REST for LockedIn",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "ejs" : "~0.8.5",
+    "express": "^4.4.5",
+    "mongoose": "^3.8.12",
+    "passport" : "0.1.17",
+    "passport-facebook" : "1.0.2",
+    "connect-flash" : "latest",
+    "bcrypt-nodejs" : "latest",
+    "morgan": "~1.0.0",
+    "body-parser": "^1.4.3",
+    "cookie-parser": "~1.0.0",
+    "method-override": "~1.0.0",
+    "express-session": "~1.0.0"
+  },
+  "scripts": {
+    "start": "app.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}

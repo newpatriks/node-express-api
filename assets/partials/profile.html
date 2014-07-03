@@ -1,0 +1,51 @@
+<div class="content has-header padding">
+<div class="list card">
+
+
+    <h2>{{name}}</h2>
+
+  <div class="item item-body">
+
+    <p>
+      This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+      the content is from a card-body consisting of an image and paragraph text. The footer
+      consists of tabs, icons aligned left, within the card-footer.
+    </p>
+    <p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>
+  </div>
+
+  <div class="item tabs tabs-secondary tabs-icon-left">
+    <a class="tab-item" href="#">
+      <i class="icon ion-thumbsup"></i>
+      Like
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-chatbox"></i>
+      Comment
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-share"></i>
+      Share
+    </a>
+  </div>
+
+</div>
+<a ng-show="facebook == false" href="#/loginform/facebook" class="button button-block button-positive">
+ Add to your profile with Facebook
+</a>
+<a ng-show="twitter == false" href="#/loginform/twitter" class="button button-block button-calm">
+ Add to your profile with Twitter
+</a>
+<a ng-show="instigram == false" href="#/loginform/instigram" class="button button-block button-assertive">
+ Add to your profile with Instigram
+</a>
+<a ng-show="bbcID == false" href="#/loginform/bbcid" class="button button-block button-dark">
+ Add to your profile with BBCid
+</a>
+<a href="#/lockedin" class="button button-block button-balanced">
+ OK ?
+</a>
+</div>

@@ -1,0 +1,33 @@
+{
+    "user": {
+        "lockedInID": "0192847",
+        "profile": {
+            "name": "Craig Doyle",
+            "facebook": {
+                "profile": {
+                    "ID": "SGML",
+                    "avatar": "SGML",
+                    "bio": "Hello my name is Craig",
+                    "Acronym": "SGML",
+                    "Abbrev": "ISO 8879:1986"
+                }
+            },
+            "twitter": {
+                "profile": {
+                    "ID": "SGML",
+                    "avatar": "SGML",
+                    "GlossTerm": "This is my twitter account",
+                    "Acronym": "SGML",
+                    "Abbrev": "ISO 8879:1986",
+                    "GlossDef": {
+                        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+                        "recentTweets": {
+                            "text" : "Hey I love tweeting!",
+                            "text" : "This is another tweet!!"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

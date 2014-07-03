@@ -1,0 +1,50 @@
+<!-- <div class="content has-header padding">
+<h1>{{individulal[current].name}}</h1>
+<p>Some Content about {{individulal[current].name}}</p>
+<button ng-click="shoutOut(individulal[current]._id)" class="button button-block button-assertive">
+ Give a shout out to {{individulal[current].name}}
+</button>
+<button ng-click="next()" class="button button-block button-balanced">
+Next
+</button>
+<button ng-click="back()" class="button button-block button-balanced">
+Back
+</button>
+<a href="#/loginform/facebook" class="button button-block button-positive">
+ Find {{individulal[current].name}} on Facebook
+</a>
+<a href="#/loginform/twitter" class="button button-block button-calm">
+  Follow {{individulal[current].name}} on Twitter
+</a>
+</div>
+ -->
+<ion-pane >
+      <ion-header-bar class="bar-transparent">
+        <h1 class="title">Help Out</h1>
+      </ion-header-bar>
+
+      <swipe-cards on-swipe="onSwipe($event)">
+
+      <swipe-cards>
+        <swipe-card on-swipe="cardSwiped()" id="start-card">
+        Swipe down to see listeners who are LockedIn
+        </swipe-card>
+        <swipe-card class="padding" ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe="cardSwiped($index)">
+
+          <div>
+           
+            <img src="http://placehold.it/150x150" class="img-circle center-block">
+             <div class="title center-block">
+              <h1 class="title center-block">{{individulal[current].name}}</h1>
+            </div>
+             <!--  <img ng-src="{{card.image}}"> -->
+            <div class="button-bar">
+             <button ng-click="shoutOut(individulal[current]._id)" class="button button-block button-assertive">
+              Give a shout out to {{individulal[current].name}}
+            </button>
+             <!--  <button class="button button-clear button-positive" ng-click="goAway()">Decline</button> -->
+            </div>
+          </div>
+        </swipe-card>
+      </swipe-cards>
+</ion-pane>

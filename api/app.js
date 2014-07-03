@@ -11,7 +11,11 @@ var cookieParser= require('cookie-parser');
 var bodyParser  = require('body-parser');
 var session     = require('express-session');
 
+<<<<<<< HEAD
 var uristring   = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/lockedin';
+=======
+var uristring   = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/lockedin' || 'http://lockedin.dev/lockedin';
+>>>>>>> 951d27440e605109a0ffbeab823b1683e4a07f3e
 mongoose.connect(uristring, function(err, res) {
     if (err) {
         console.log("ERROR MONGODB");
@@ -46,7 +50,11 @@ require('./app/routes.js')(router, passport);
 
 
 // STARTUP SERVER
+<<<<<<< HEAD
 app.use('/', router);
+=======
+app.use('/api', router);
+>>>>>>> 951d27440e605109a0ffbeab823b1683e4a07f3e
 app.listen(port, function() {
     console.log("Listening on port number: ", port);
 });
