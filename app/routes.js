@@ -7,7 +7,11 @@ module.exports = function(router, passport) {
     });
 
     router.get('/status', function(req,res) {
-        res.json(req.user);
+        if (!req.user) {
+            notAuthenticated(res,'/status');
+        }else{
+            res.json(req.user);
+        }
     })
 
     // =====================================
@@ -24,55 +28,75 @@ module.exports = function(router, passport) {
     // LOGOUT ==============================
     // =====================================
     router.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+        if (!req.user) {
+            notAuthenticated(res,'/logout');
+        }else{
+            req.logout();
+            res.redirect('/');
+        }
     });
 
     router.route('/users/:id_user')
         .get(function(req,res) {
-            User.findById(req.params.id_user, function(err, user) {
-                if (err)
-                    res.send(err);
-                res.json(user);
-            });
+            if (!req.user) {
+                notAuthenticated(res,'/users/:id_user');
+            }else{
+                User.findById(req.params.id_user, function(err, user) {
+                    if (err)
+                        res.send(err);
+                    res.json(user);
+                });
+            }
         })
         .put(function(req,res) {
             // UPDATE A USER
         })
         .delete(function(req,res) {
-            User.remove({
-                _id : req.params.id_user
-            }, function(err,user) {
-                if (err)
-                    res.send(err);
-                res.json({ message : 'User deleted '});
-            });
+            if (!req.user) {
+                notAuthenticated(res,'/users/:id_user');
+            }else{
+                User.remove({
+                    _id : req.params.id_user
+                }, function(err,user) {
+                    if (err)
+                        res.send(err);
+                    res.json({ message : 'User deleted '});
+                });
+            }
         });
 
 
     router.route('/users')
         .post(function(req, res) {
-            var user = new User();
-            user.local.name       = req.body.name;
-            user.local.email      = req.body.email;
-            var password    = req.body.password;
-            user.local.password   = user.generateHash(password);
-            
-            user.save(function(err) {
-                if (err)
-                    res.send(err);
+            if (!req.user) {
+                notAuthenticated(res,'/users');
+            }else{
+                var user = new User();
+                user.local.name       = req.body.name;
+                user.local.email      = req.body.email;
+                var password    = req.body.password;
+                user.local.password   = user.generateHash(password);
+                
+                user.save(function(err) {
+                    if (err)
+                        res.send(err);
 
-                res.json({ message: 'User created!' });
-            });
+                    res.json({ message: 'User created!' });
+                });
+            }
         })
         
         .get(function(req, res) {
-            User.find(function(err, users) {
-                if (err)
-                    res.send(err);
+            if (!req.user) {
+                notAuthenticated(res,'/users');
+            }else{
+                User.find(function(err, users) {
+                    if (err)
+                        res.send(err);
 
-                res.json(users);
-            });
+                    res.json(users);
+                });
+            }
         });
 
     // =====================================
@@ -154,6 +178,13 @@ module.exports = function(router, passport) {
            res.redirect('/status');
         });
     });
+
+
+    function notAuthenticated(res,action) {
+        res.statusCode = 403;
+        //res.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"'); 
+        res.json({ "code":403, "status":"error", "message":"Invalid user", "data":"" });
+    }
 };
 
 // route middleware to make sure a user is logged in

@@ -1,6 +1,6 @@
 // load all the things we need
-var fbStrategy  = require("passport-facebook").Strategy;
-var twStrategy  = require('passport-twitter').Strategy;
+var fbStrategy      = require("passport-facebook").Strategy;
+var twStrategy      = require('passport-twitter').Strategy;
 
 // load up the user model
 var User        = require('../app/models/user');
@@ -10,7 +10,7 @@ var url         = process.env.APP_URI || 'http://localhost:5000';
 var configAuth  = require('./auth')(url);
 
 // expose this function to our app using module.exports
-module.exports = function(passport) {
+module.exports = function(passport, router) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -64,12 +64,27 @@ module.exports = function(passport) {
                         // if there is no user found with that facebook id, create them
                         var newUser            = new User();
 
+                        
+                        // Copy all the attributes to the model
+                        var seen = [];
+                        JSON.stringify(profile, function(key, val) {
+                            if (val != null && typeof val == "object") {
+                                if (seen.indexOf(val) >= 0)
+                                    return
+                                seen.push(val)
+                            }
+                            return val
+                        });
+                        newUser.facebook = seen;
+
                         // set all of the facebook information in our user model
+                        /*
                         newUser.facebook.id    = profile.id; // set the users facebook id                   
                         newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
                         newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
+                        newUser.facebook.user_likes = profile
+                        */
                         // save our user to the database
                         newUser.save(function(err) {
                             if (err)
@@ -114,7 +129,6 @@ module.exports = function(passport) {
 
     },
     function(req, token, refreshToken, profile, done) {
-
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Twitter
         process.nextTick(function() {

@@ -19,7 +19,7 @@ mongoose.connect(uristring, function(err, res) {
         console.log("SUCCEEDED CONNECTING MONGODB");
     }
 });
-require('./config/passport')(passport);
+require('./config/passport')(passport,router);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
