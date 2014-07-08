@@ -13,7 +13,8 @@ var userSchema = new Schema({
         id          : String,
         token       : String,
         email       : String,
-        name        : String
+        name        : String,
+        likes       : [Schema.Types.ObjectId]
     },
     twitter     : {
         id          : String,
@@ -27,6 +28,7 @@ var userSchema = new Schema({
         email       : String,
         name        : String
     },
+    access_token    : String,
     creationDate    : { type: Date, 'default':Date.now }
 });
 

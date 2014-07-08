@@ -1,3 +1,79 @@
+var db              = require('../config/mongo_db');
+var jwt             = require('jsonwebtoken');
+var secret          = require('../config/secret');
+var redisClient     = require('../config/redis_db').redisClient;
+var tokenManager    = require('../config/token_manager');
+
+
+exports.register = function(req, res) {
+    console.log("Register...");
+    //console.log(req.body);
+    console.log("------------------------------------------------");
+    
+
+    switch(req.body.sn) {
+
+        case 'fb':
+            console.log("FB Login");
+            
+            
+            var id = req.body.facebook.id;
+            var user = new db.userModel();
+            /*
+            db.userModel.findOne({ facebook.id : id}, function(err, user) {
+                if (err) {
+                    console.log(err);
+                }
+                return res.send(200);
+            });
+            var seen = [];
+            JSON.stringify(profile, function(key, val) {
+                if (val != null && typeof val == "object") {
+                    if (seen.indexOf(val) >= 0)
+                        return
+                    seen.push(val)
+                }
+                return val
+            });
+            user.local = seen;
+            */
+            break;
+
+        case 'tw':
+            console.log("TW Login");
+            break;
+
+        case 'g+':
+            console.log("G+ Login");
+            break;
+
+        case 'bbc':
+            console.log("BBC Login");
+            break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 module.exports = function(router, passport) {
 
     var User = require('./models/user');
@@ -6,22 +82,22 @@ module.exports = function(router, passport) {
         res.json({ message: 'hooray! welcome to our api!' });   
     });
 
-    router.get('/status', function(req,res) {
-        if (!req.user) {
-            notAuthenticated(res,'/status');
-        }else{
-            res.json(req.user);
+    router.get('/status', passport.authenticate('bearer', { session : false }), 
+        function(req, res) {
+            User.findOne({ access_token : req.user}, function(err, user) {
+                res.json(user);
+            })
         }
-    })
+    );
 
     // =====================================
     // LOGIN ===============================
     // =====================================
     // show the login form
-    router.get('/login', function(req, res) {
+    router.get('/login', function(req, res, next) {
         
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs'); 
     });
 
     // =====================================
@@ -52,9 +128,6 @@ module.exports = function(router, passport) {
             // UPDATE A USER
         })
         .delete(function(req,res) {
-            if (!req.user) {
-                notAuthenticated(res,'/users/:id_user');
-            }else{
                 User.remove({
                     _id : req.params.id_user
                 }, function(err,user) {
@@ -62,41 +135,42 @@ module.exports = function(router, passport) {
                         res.send(err);
                     res.json({ message : 'User deleted '});
                 });
-            }
         });
 
 
     router.route('/users')
         .post(function(req, res) {
-            if (!req.user) {
-                notAuthenticated(res,'/users');
-            }else{
-                var user = new User();
-                user.local.name       = req.body.name;
-                user.local.email      = req.body.email;
-                var password    = req.body.password;
-                user.local.password   = user.generateHash(password);
-                
-                user.save(function(err) {
-                    if (err)
-                        res.send(err);
+            console.log(req.body);
 
-                    res.json({ message: 'User created!' });
-                });
-            }
+            var user = new User();
+            
+            // Transforming the JS object to JSON to be saved on mongodb            
+            var seen = [];
+            JSON.stringify(profile, function(key, val) {
+                if (val != null && typeof val == "object") {
+                    if (seen.indexOf(val) >= 0)
+                        return
+                    seen.push(val)
+                }
+                return val
+            });
+            user.local = seen;
+            
+            user.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'User created!' });
+            });
         })
         
         .get(function(req, res) {
-            if (!req.user) {
-                notAuthenticated(res,'/users');
-            }else{
-                User.find(function(err, users) {
-                    if (err)
-                        res.send(err);
+            User.find(function(err, users) {
+                if (err)
+                    res.send(err);
 
-                    res.json(users);
-                });
-            }
+                res.json(users);
+            });
         });
 
     // =====================================
@@ -197,3 +271,4 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+*/

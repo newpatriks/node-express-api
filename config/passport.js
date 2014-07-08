@@ -1,16 +1,18 @@
 // load all the things we need
 var fbStrategy      = require("passport-facebook").Strategy;
 var twStrategy      = require('passport-twitter').Strategy;
+var BearerStrategy  = require('passport-http-bearer').Strategy;
+var moment          = require('moment');
 
 // load up the user model
-var User        = require('../app/models/user');
+var User            = require('../app/models/user');
 
 // load the auth variables
-var url         = process.env.APP_URI || 'http://localhost:5000';
-var configAuth  = require('./auth')(url);
+var url             = process.env.APP_URI || 'http://localhost:5000';
+var configAuth      = require('./auth')(url);
 
 // expose this function to our app using module.exports
-module.exports = function(passport, router) {
+module.exports = function(passport, router, app, jwt) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -19,16 +21,34 @@ module.exports = function(passport, router) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
+    
+
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+    passport.deserializeUser(function(token, done) {
+        User.findOne( {access_token : token}, function(err, user) {
             done(err, user);
         });
     });
+
+
+    passport.use('bearer',new BearerStrategy(function(token, done) {
+        process.nextTick(function() {
+            User.findOne({ 'access_token' : token }, function(err, user) {
+                if(err) {
+                    return done(err);
+                }
+                if(!user) {
+                    return done(null, false);
+                }
+
+                return done(null, token);
+            });
+        });
+    }));
 
     // =========================================================================
     // FACEBOOK ================================================================
@@ -55,16 +75,20 @@ module.exports = function(passport, router) {
                     // if there is an error, stop everything and return that
                     // ie an error connecting to the database
                     if (err)
-                        return done(err);
+                        return res.send(401);
 
                     // if the user is found, then log them in
                     if (user) {
-                        return done(null, user); // user found, return that user
+                        user.access_token = token;
+                        user.save(function(err,doc) {
+                            done(err, doc);
+                        });
+                        
+                        //return done(null, user); // user found, return that user
                     } else {
                         // if there is no user found with that facebook id, create them
                         var newUser            = new User();
 
-                        
                         // Copy all the attributes to the model
                         var seen = [];
                         JSON.stringify(profile, function(key, val) {
@@ -76,15 +100,8 @@ module.exports = function(passport, router) {
                             return val
                         });
                         newUser.facebook = seen;
+                        newUser.access_token = token;
 
-                        // set all of the facebook information in our user model
-                        /*
-                        newUser.facebook.id    = profile.id; // set the users facebook id                   
-                        newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-                        newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                        newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-                        newUser.facebook.user_likes = profile
-                        */
                         // save our user to the database
                         newUser.save(function(err) {
                             if (err)
