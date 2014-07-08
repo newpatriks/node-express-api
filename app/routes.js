@@ -71,7 +71,7 @@ module.exports = function(router, passport) {
             var user = new User();
             
             var data = req.body.profile;
-            switch(data.social) {
+            switch(req.body.social) {
                 case 'facebook':
                     var seen = [];
                     JSON.stringify(data, function(key, val) {
