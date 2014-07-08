@@ -24,28 +24,28 @@ exports.register = function(req, res) {
                     db.userModel.findOne({ "facebook.email" : info.email}, function(err, user) {
                         if (err)
                             console.log(err);
-                            return res.send(401);
+                            return res.send(401, {message:'FAIL 1'});
                         if (!user) {
-                            // 2.1. IF !EXIST (IT'S NEW)
-                                // 2.1.1. REGISTER
-                                var user = new db.userModel();
-                                var seen = [];
-                                JSON.stringify(profile, function(key, val) {
-                                    if (val != null && typeof val == "object") {
-                                        if (seen.indexOf(val) >= 0)
-                                            return
-                                        seen.push(val)
-                                    }
-                                    return val;
-                                });
-                                user.local = seen;
-                                var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                                user.access_token = token;
-                                user.save();
-                                return res.send(200, { token : token, message : "User created succesfully!" });
+                        // 2.1. IF !EXIST (IT'S NEW)
+                            // 2.1.1. REGISTER
+                            var user = new db.userModel();
+                            var seen = [];
+                            JSON.stringify(profile, function(key, val) {
+                                if (val != null && typeof val == "object") {
+                                    if (seen.indexOf(val) >= 0)
+                                        return
+                                    seen.push(val)
+                                }
+                                return val;
+                            });
+                            user.local = seen;
+                            var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                            user.access_token = token;
+                            user.save();
+                            return res.send(200, { token : token, message : "User created succesfully!" });
 
-                                // 2.1.2. CREATE TOKEN
-                                // 2.1.3. RETURN TOKEN
+                            // 2.1.2. CREATE TOKEN
+                            // 2.1.3. RETURN TOKEN
                         }
                         if (user) {
                             console.log(".........This userr already exist");
