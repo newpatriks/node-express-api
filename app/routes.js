@@ -77,7 +77,8 @@ module.exports = function(router, passport) {
                     JSON.stringify(data, function(key, val) {
                         if (val != null && typeof val == "object") {
                             if (seen.indexOf(val) >= 0)
-                                return seen.push(val)
+                                    return
+                            seen.push(val)
                         }
                         return val
                     });
