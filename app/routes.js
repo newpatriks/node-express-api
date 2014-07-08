@@ -69,16 +69,28 @@ module.exports = function(router, passport) {
     router.route('/users')
         .post(function(req, res) {
             var user = new User();
-            user.local.name       = req.body.name;
-            user.local.email      = req.body.email;
-            var password    = req.body.password;
-            user.local.password   = user.generateHash(password);
             
+            var data = req.body.profile;
+            switch(data.social) {
+                case 'facebook':
+                    var seen = [];
+                    JSON.stringify(data, function(key, val) {
+                        if (val != null && typeof val == "object") {
+                            if (seen.indexOf(val) >= 0)
+                                return seen.push(val)
+                        }
+                        return val
+                    });
+                    user.facebook = seen;
+                    break;
+            }
+
             user.save(function(err) {
                 if (err)
                     res.send(err);
 
-                res.json({ message: 'User created!' });
+                res.send(200);
+                res.json({ message: 'User created' });
             });
         })
         
