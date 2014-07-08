@@ -21,10 +21,9 @@ exports.register = function(req, res) {
             
             // 1. CHECK DE [EMAIL] AND [SOCIAL]
                 if (info) {
-                    db.userModel.findOne({ "facebook.email" : info.email}, function(err, user) {
+                    db.userModel.findOne({ 'facebook.email' : info.email}, function(err, user) {
                         if (err)
-                            console.log(err);
-                            return res.send(401, {message:'FAIL 1'});
+                            return res.send(401, {message :err });
                         if (!user) {
                         // 2.1. IF !EXIST (IT'S NEW)
                             // 2.1.1. REGISTER
