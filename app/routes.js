@@ -68,35 +68,27 @@ module.exports = function(router, passport) {
 
     router.route('/users')
         .post(function(req, res) {
-            if (!req.user) {
-                notAuthenticated(res,'/users');
-            }else{
-                var user = new User();
-                user.local.name       = req.body.name;
-                user.local.email      = req.body.email;
-                var password    = req.body.password;
-                user.local.password   = user.generateHash(password);
-                
-                user.save(function(err) {
-                    if (err)
-                        res.send(err);
+            var user = new User();
+            user.local.name       = req.body.name;
+            user.local.email      = req.body.email;
+            var password    = req.body.password;
+            user.local.password   = user.generateHash(password);
+            
+            user.save(function(err) {
+                if (err)
+                    res.send(err);
 
-                    res.json({ message: 'User created!' });
-                });
-            }
+                res.json({ message: 'User created!' });
+            });
         })
         
         .get(function(req, res) {
-            if (!req.user) {
-                notAuthenticated(res,'/users');
-            }else{
-                User.find(function(err, users) {
-                    if (err)
-                        res.send(err);
+            User.find(function(err, users) {
+                if (err)
+                    res.send(err);
 
-                    res.json(users);
-                });
-            }
+                res.json(users);
+            });
         });
 
     // =====================================
