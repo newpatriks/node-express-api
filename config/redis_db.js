@@ -17,7 +17,7 @@ if (process.env.REDISTOGO_URL) {
 
 var port = heroku.port || 6379; 
 var host = heroku.host || '127.0.0.1';
-var redisClient = redis.createClient(port, host);
+redisClient = redis.createClient(port, host);
 
 redisClient.on('error', function (err) {
     console.log('Error ' + err);
