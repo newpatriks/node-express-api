@@ -1,4 +1,4 @@
-var redisClient             = require('./redis_db').redisClient;
+var redisClient             = require('./redis_db');
 var TOKEN_EXPIRATION        = 60;
 var TOKEN_EXPIRATION_SEC    = TOKEN_EXPIRATION * 60;
 
