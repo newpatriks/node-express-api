@@ -1,6 +1,7 @@
 if (process.env.REDISTOGO_URL) {
-    var url   = require("url").parse(process.env.OPENREDIS_URL);
-    var redis = require("redis").createClient(url.port, url.hostname);
+    var url         = require("url").parse(process.env.OPENREDIS_URL);
+    var redis       = require("redis")
+    var redisClient = createClient(url.port, url.hostname);
     redis.auth(url.auth.split(":")[1]);
 }else{
     var redis       = require('redis');
@@ -19,7 +20,7 @@ if (process.env.REDISTOGO_URL) {
         console.log("host : "+host+" @ "+port);
         console.log('----------------------------------------------');
     });
-    exports.redisClient = redisClient;
 }
 
 exports.redis       = redis;
+exports.redisClient = redisClient;
