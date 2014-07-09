@@ -96,9 +96,9 @@ exports.listAll = function(req, res) {
             console.log(err);
             return res.send(400);
         }
-        for (var postKey in results) {
+        /*for (var postKey in results) {
             results[postKey].content = results[postKey].content.substr(0, 400);
-        }
+        }*/
 
         return res.json(200, results);
     });
