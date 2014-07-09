@@ -25,3 +25,6 @@ redisClient.on('connect', function () {
     console.log('----------------------------------------------');
 });
 
+exports.redis = redis;
+exports.redisClient = redisClient;
+
