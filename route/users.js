@@ -13,12 +13,13 @@ exports.register = function(req, res) {
     var info    = req.body.profile || '';
     var sn      = req.body.social || '';
 
+    /*
     console.log("info ------------------");
     console.log(info);
 
     console.log("sn --------------------");
     console.log(sn);
-
+    */
 
     switch(sn) {
 
@@ -35,7 +36,7 @@ exports.register = function(req, res) {
                             // 2.1.1. REGISTER
                             var user = new db.userModel();
                             var seen = [];
-                            JSON.stringify(profile, function(key, val) {
+                            JSON.stringify(info, function(key, val) {
                                 if (val != null && typeof val == "object") {
                                     if (seen.indexOf(val) >= 0)
                                         return
