@@ -10,7 +10,6 @@ exports.register = function(req, res) {
     console.log("------------------------------------------------");
     
     // GET THE INFORMATION
-    var info    = req.body.profile || '';
     var sn      = req.body.social || '';
 
     /*
@@ -25,7 +24,7 @@ exports.register = function(req, res) {
 
         case 'facebook':
             console.log("FB Login");
-            
+            var info    = req.body.facebook || '';
             // 1. CHECK DE [EMAIL] AND [SOCIAL]
                 if (info) {
                     db.userModel.findOne({ 'facebook.email' : info.email}, function(err, user) {
