@@ -1,24 +1,21 @@
 var redis       = require('redis');
 var url         = require('url');
-var redisClient;
 var heroku      = [];
 
 if (process.env.REDISTOGO_URL) {
     // use production (Heroku) redis configuration
     // overwrite config to keep it simple
     var rtg             = require('url').parse(process.env.REDISTOGO_URL);
-    heroku.port         = rtg.port;
-    heroku.host         = rtg.hostname;
+    var port            = rtg.port;
+    var host            = rtg.hostname;
     heroku.password     = rtg.auth.split(':')[1];
     heroku.redisDb      = rtg.auth.split(':')[0];
-
-    redisClient         = redis.createClient(heroku.port, heroku.host);
+}else{
+    var port = 6379; 
+    var host = '127.0.0.1';
 }
 
-var port = heroku.port || 6379; 
-var host = heroku.host || '127.0.0.1';
-redisClient = redis.createClient(port, host);
-
+var redisClient         = redis.createClient(port, host);
 redisClient.on('error', function (err) {
     console.log('Error ' + err);
 });
@@ -30,6 +27,5 @@ redisClient.on('connect', function () {
     console.log('----------------------------------------------');
 });
 
-exports.redis = redis;
+exports.redis       = redis;
 exports.redisClient = redisClient;
-
