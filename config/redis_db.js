@@ -1,4 +1,5 @@
 var redis       = require('redis');
+var url         = require('url');
 var heroku      = [];
 
 if (process.env.REDISTOGO_URL) {
@@ -8,6 +9,9 @@ if (process.env.REDISTOGO_URL) {
     heroku.port         = rtg.port;
     heroku.host         = rtg.hostname;
     heroku.password     = rtg.auth.split(':')[1];
+    heroku.redisDb      = rtg.auth.split(':')[0];
+
+    var redisClient = redis.createClient(port, host);
 }
 
 var port = heroku.port || 6379; 
