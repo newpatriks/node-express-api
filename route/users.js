@@ -10,33 +10,7 @@ exports.register = function(req, res) {
     console.log("------------------------------------------------");
     
     // GET THE INFORMATION
-    var sn      = req.body.social || '';
-
-    /*
-    console.log("info ------------------");
-    console.log(info);
-
-    console.log("sn --------------------");
-    console.log(sn);
-    */
-
-    var info    = req.body[sn] || '';
-    if (info.token) {
-        // RECEIVING [ACCESS_TOKEN] => MERGE ACCOUNTS [EMAIL] [SOCIAL]
-    }else{
-        // !RECEIVING [ACCESS_TOKEN] 
-
-        if (existIn(sn, info.email)) {
-            // USER ALREADY EXISTS
-
-        }else{
-            // USER DOESN'T EXISTS
-
-        }
-    }
-
-
-
+    var sn = req.body.social || '';
     switch(sn) {
 
         case 'facebook':
@@ -66,18 +40,13 @@ exports.register = function(req, res) {
                             user.save();
                             // 2.1.2. CREATE & RETURN TOKEN
                             return res.send(200, { token : token });
-
-                            
                         }
                         if (user) {
                             console.log(".........This userr already exist");
-                            // 2.2. IF EXIST
-                            if (info.token) {
-                                // 2.2.1. RECEIVING [ACCESS_TOKEN] => MERGE ACCOUNTS [EMAIL] [SOCIAL]
-
-                            }else{
-                                
-                            }
+                            var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                            user.access_token = token;
+                            user.save();
+                            return res.send(200, { token : token });
                         }
                     });
                 }else{
@@ -96,52 +65,6 @@ exports.register = function(req, res) {
         case 'bbc':
             console.log("BBC Login");
             break;
-    }
-
-    existIn : function(sn, email) {
-        switch(sn) {
-            case 'facebook':
-                db.userModel.findOne({ 'facebook.email' : email}, function(err, user) {
-                    if (user)
-                        return true
-                    if (!user)
-                        return false
-                    if (err)
-                        return false
-                }
-                break;
-            case 'twitter':
-                db.userModel.findOne({ 'twitter.email' : email}, function(err, user) {
-                    if (user)
-                        return true
-                    if (!user)
-                        return false
-                    if (err)
-                        return false
-                }
-                break;
-            case 'instagram':
-                db.userModel.findOne({ 'instagram.email' : email}, function(err, user) {
-                    if (user)
-                        return true
-                    if (!user)
-                        return false
-                    if (err)
-                        return false
-                }
-                break;
-            case 'google':
-                db.userModel.findOne({ 'google.email' : email}, function(err, user) {
-                    if (user)
-                        return true
-                    if (!user)
-                        return false
-                    if (err)
-                        return false
-                }
-                break;
-
-        }   
     }
 }
 
