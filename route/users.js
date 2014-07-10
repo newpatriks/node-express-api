@@ -38,6 +38,7 @@ exports.register = function(req, res) {
                         user.access_token = token;
                         user.save();
                         // 2.1.2. CREATE & RETURN TOKEN
+                        
                         return res.send(200, { token : token });
                     }
                     if (user) {
@@ -86,7 +87,9 @@ exports.register = function(req, res) {
                         user.access_token = token;
                         user.save();
                         // 2.1.2. CREATE & RETURN TOKEN
-                        return res.send(200, { token : token });
+                        res.status(200);
+                        res.send({ token : token });
+                        return res;
                     }
                     if (user) {
                         console.log(".........This user already exist");
@@ -100,7 +103,9 @@ exports.register = function(req, res) {
                                 //res.send(user);
                             }
                         });
-                        return res.send(200, { token : token });
+                        res.status(200);
+                        res.send({ token : token });
+                        return res;
                     }
                 });
             }else{
@@ -131,7 +136,7 @@ exports.merge = function(req, res) {
             return res.send(401, {message : err});
         
         if (!user) {
-            return res.send(400, { message : "You have to log in first" });
+            return res.send(400, { message : "You need to log in first" });
         }
         
         if (user) {
@@ -151,6 +156,21 @@ exports.merge = function(req, res) {
 
     });    
 
+}
+
+exports.status = function(req, res) {
+    db.userModel.findOne({ 'access_token' : req.body.token}, function(err, user) {
+        if (err) {
+            console.log();
+            return res.send(401, { message : err });
+        }
+        if (!user) {
+            return res.send(400, { message : "You need to log in first" });
+        }
+        if (user) {
+            return res.send(200, { data : user });
+        }
+    }); 
 }
 
 exports.listAll = function(req, res) {

@@ -9,10 +9,12 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
         console.log('Connection refused to ' + mongodbURL);
         console.log(err);
     } else {
-        console.log('----------------------------------------------');
+        /*
+        console.log('\n----------------------------------------------');
         console.log('MongoDB is ready');
         console.log("host : "+mongodbURL);
         console.log('----------------------------------------------');
+        */
     }
 });
 

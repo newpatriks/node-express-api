@@ -11,7 +11,7 @@ redis.on('error', function (err) {
 });
 
 redis.on('connect', function () {
-    console.log('----------------------------------------------');
+    console.log('\n----------------------------------------------');
     console.log('Redis is ready ');
     //console.log("       host : "+host+" @ "+port);
     console.log('----------------------------------------------');
