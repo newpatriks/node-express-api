@@ -4,7 +4,7 @@ var request     = require('supertest');
 var mongoose    = require('mongoose');
 var db          = require('../config/mongo_db');
 
-describe('Routing', function() {
+describe('User system', function() {
     var url     = 'http://localhost:5000';
     var token   = '';
     before(function(done) {
@@ -40,7 +40,7 @@ describe('Routing', function() {
         });
     });
     describe('Register', function() {
-        it('Should return 200 when we create a user with facebook information', function(done) {
+        it('Should return 200 when we create a user | Facebook profile', function(done) {
             var profile = {
                 social : 'facebook',
                 token : '',
@@ -112,6 +112,30 @@ describe('Routing', function() {
         it('Should return a 200 http code trying to get all users', function(done) {
             (response.status).should.be.exactly(200); 
             done();
+        });
+        it('Should update the information of the user | Twitter profile', function(done) {
+            var profile = {
+                social : 'twitter',
+                token : token,
+                facebook    : {},
+                twitter     : {
+                    "email": "newpatriks@gmail.com",
+                    "name": "Jordi",
+                    "location": "London",
+                    "username": "newpatriks"
+                },
+                instagram : {}
+            };
+            request(url)
+                .post('/user/merge')
+                .set('Authorization', 'Bearer ' + token)
+                .send(profile)
+                .end(function (req,res) {
+                    (res.body.data.twitter[0]['name']).should.be.eql('Jordi');
+                    (res.body.data.twitter[0]['username']).should.be.eql('newpatriks');
+                    (res.body.data.twitter[0]['email']).should.be.eql('newpatriks@gmail.com');
+                    done();
+                });
         });
     });
 });
