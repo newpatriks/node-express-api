@@ -34,7 +34,11 @@ routes.users    = require('./route/users.js');
 
 
 // CALLS
-app.post('/user/register', routes.users.register);
+app.post('/user', routes.users.register);
+app.delete('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.remove);
+app.get('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.status);
+
 app.post('/user/merge', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);
-app.post('/user/status', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);
+app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.logout);
+
 app.get('/users/all', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.listAll);

@@ -46,6 +46,7 @@ var User = new Schema({
         name        : String
     },
     is_dj           : { type: Boolean, default: false },
+    online          : { type: Boolean, default: true },
     access_token    : String,
     creationDate    : { type: Date, 'default':Date.now }
 });

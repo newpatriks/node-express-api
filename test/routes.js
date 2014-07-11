@@ -45,14 +45,25 @@ describe('User system', function() {
                 social : 'facebook',
                 token : '',
                 facebook : {
-                    name: 'test',
-                    email: 'test@lockedin.com'
+                    "email": "test@lockedin.com",
+                    "first_name": "Test",
+                    "gender": "male",
+                    "id": "10154355075120086",
+                    "last_name": "Test",
+                    "link": "https://www.facebook.com/app_scoped_user_id/id_test/",
+                    "locale": "en_UK",
+                    "name": "Test Lockedin",
+                    "picture": "http://graph.facebook.com/id_test/picture",
+                    "thumbnail": "http://graph.facebook.com/id_test/picture",
+                    "timezone": "1",
+                    "updated_time": "2014-02-08T16:31:07+0000",
+                    "verified": "true"
                 },
                 twitter : {},
                 instagram : {}
             };
         request(url)
-            .post('/user/register')
+            .post('/user')
             .send(profile)
             .end(function(err, res) {
                 if (err)
@@ -67,14 +78,25 @@ describe('User system', function() {
                 social : 'facebook',
                 token : '',
                 facebook : {
-                    name: 'test',
-                    email: 'test@lockedin.com'
+                    "email": "test@lockedin.com",
+                    "first_name": "Test",
+                    "gender": "male",
+                    "id": "10154355075120086",
+                    "last_name": "Test",
+                    "link": "https://www.facebook.com/app_scoped_user_id/id_test/",
+                    "locale": "en_UK",
+                    "name": "Test Lockedin",
+                    "picture": "http://graph.facebook.com/id_test/picture",
+                    "thumbnail": "http://graph.facebook.com/id_test/picture",
+                    "timezone": "1",
+                    "updated_time": "2014-02-08T16:31:07+0000",
+                    "verified": "true"
                 },
                 twitter : {},
                 instagram : {}
             };
         request(url)
-            .post('/user/register')
+            .post('/user')
             .send(profile)
             .end(function(err, res) {
                 if (err)
@@ -91,17 +113,10 @@ describe('User system', function() {
         var response;
         beforeEach(function (done) {
             var profile = {
-                social : 'facebook',
-                token : token,
-                facebook : {
-                    name: 'test',
-                    email: 'test@lockedin.com'
-                },
-                twitter : {},
-                instagram : {}
+                token : token
             };
             request(url)
-                .get('/users/all')
+                .get('/user')
                 .set('Authorization', 'Bearer ' + token)
                 .send(profile)
                 .end(function (req,res) {
@@ -109,11 +124,16 @@ describe('User system', function() {
                     done();
                 });
         });
-        it('Should return a 200 http code trying to get all users', function(done) {
-            (response.status).should.be.exactly(200); 
+        it('Should return a 200 http code calling to a required authentication call', function(done) {
+            (response.status).should.be.exactly(200);
             done();
         });
-        it('Should update the information of the user | Twitter profile', function(done) {
+        it('Should return the information about the user calling /user [get]', function(done) {
+            (response.body.data.facebook[0]['name']).should.be.eql('Test Lockedin');
+            (response.body.data.facebook[0]['email']).should.be.eql('test@lockedin.com');
+            done();
+        });
+        it('Should update the information of the user calling user/merge | Twitter profile', function(done) {
             var profile = {
                 social : 'twitter',
                 token : token,
@@ -134,6 +154,20 @@ describe('User system', function() {
                     (res.body.data.twitter[0]['name']).should.be.eql('Jordi');
                     (res.body.data.twitter[0]['username']).should.be.eql('newpatriks');
                     (res.body.data.twitter[0]['email']).should.be.eql('newpatriks@gmail.com');
+                    done();
+                });
+        });
+        it('Should list the users that are online', function(done) {
+            var profile = {
+                token : token
+            };
+            request(url)
+                .get('/users/all')
+                .set('Authorization', 'Bearer ' + token)
+                .send(profile)
+                .end(function (req,res) {
+                    var data = JSON.parse(res.text)['data'];
+                    (data.length).should.be.above(0);
                     done();
                 });
         });

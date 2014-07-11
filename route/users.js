@@ -87,9 +87,7 @@ exports.register = function(req, res) {
                         user.access_token = token;
                         user.save();
                         // 2.1.2. CREATE & RETURN TOKEN
-                        res.status(200);
-                        res.send({ token : token });
-                        return res;
+                        return res.send(200, { token : token });
                     }
                     if (user) {
                         console.log(".........This user already exist");
@@ -173,12 +171,30 @@ exports.status = function(req, res) {
     }); 
 }
 
+exports.logout = function(req, res) {
+    db.userModel.update({ 'access_token' : req.body.token }, {'online' : false}, function(err, result) { 
+        if (err)
+           return res.send(401, { message : err }); 
+
+        return res.send(200);
+    });
+}
+
+exports.remove = function(req, res) {
+    db.userModel.remove({ 'access_token' : req.body.token}, function(err, result) {
+        if (err)
+            return res.send(401, { message : err });
+        
+        return res.send(200);
+    });    
+}
+
 exports.listAll = function(req, res) {
     console.log("List All --------------");
     if (!req.user) 
         return res.send(401, { message : "You need to be Logged to do call this petition" });
 
-    var query = db.userModel.find();
+    var query = db.userModel.find({ 'online' : true });
     query.sort('-created');
     query.exec(function(err, results) {
         if (err) {
@@ -190,6 +206,6 @@ exports.listAll = function(req, res) {
             results[postKey].content = results[postKey].content.substr(0, 400);
         }
         */
-        return res.json(200, results);
+        return res.json(200, { data : results });
     });
 };
