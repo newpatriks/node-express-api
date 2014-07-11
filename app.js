@@ -21,7 +21,7 @@ var allowCrossDomain  = function(req, res, next) {
     }
 };
 
-if ('development' == app.get('env')) {  
+if ('development' == app.get('env')) {
   app.use(allowCrossDomain);
   app.use(bodyParser());
   app.use(morgan());

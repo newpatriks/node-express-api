@@ -50,6 +50,9 @@ var getToken = function(headers) {
     }
 };
 
+exports.getToken = function(headers) {
+    return getToken(headers);
+}
+
 exports.TOKEN_EXPIRATION        = TOKEN_EXPIRATION;
 exports.TOKEN_EXPIRATION_SEC    = TOKEN_EXPIRATION_SEC;
-exports.getToken                = getToken;

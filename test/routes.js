@@ -112,9 +112,6 @@ describe('User system', function() {
     describe('When Authorized', function() {
         var response;
         beforeEach(function (done) {
-            var profile = {
-                token : token
-            };
             request(url)
                 .get('/user')
                 .set('Authorization', 'Bearer ' + token)

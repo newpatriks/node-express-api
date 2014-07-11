@@ -157,16 +157,16 @@ exports.merge = function(req, res) {
 }
 
 exports.status = function(req, res) {
-    db.userModel.findOne({ 'access_token' : req.body.token}, function(err, user) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
         if (err) {
             console.log();
             return res.send(401, { message : err });
         }
         if (!user) {
             console.log("!user -----------------------------");
-            console.log(req.body.token);
+            console.log(secret);
             console.log("FI !user -----------------------------");
-            return res.send(400, { message : "You need to log in first" });
+            return res.send(400, { message : "fuck: "+tokenManager.getToken(req.headers) });
         }
         if (user) {
             return res.send(200, { data : user });
