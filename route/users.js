@@ -164,7 +164,7 @@ exports.status = function(req, res) {
         }
         if (!user) {
             console.log("!user -----------------------------");
-            console.log(req);
+            console.log(secret.secretToken);
             return res.send(400, { message : "You need to log in first" });
         }
         if (user) {
