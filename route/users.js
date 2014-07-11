@@ -157,7 +157,7 @@ exports.merge = function(req, res) {
 }
 
 exports.status = function(req, res) {
-    db.userModel.findOne({ 'access_token' : req.body.token}, function(err, user) {
+    db.userModel.findOne({ 'access_token' : secret.secretToken}, function(err, user) {
         if (err) {
             console.log();
             return res.send(401, { message : err });
