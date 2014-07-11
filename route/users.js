@@ -157,14 +157,14 @@ exports.merge = function(req, res) {
 }
 
 exports.status = function(req, res) {
-    db.userModel.findOne({ 'access_token' : tokenManager.getToken}, function(err, user) {
+    db.userModel.findOne({ 'access_token' : req.body.token}, function(err, user) {
         if (err) {
             console.log();
             return res.send(401, { message : err });
         }
         if (!user) {
             console.log("!user -----------------------------");
-            console.log(tokenManager.getToken);
+            console.log(req.body.token);
             console.log("FI !user -----------------------------");
             return res.send(400, { message : "You need to log in first" });
         }
