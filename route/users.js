@@ -163,6 +163,7 @@ exports.status = function(req, res) {
             return res.send(401, { message : err });
         }
         if (!user) {
+            console.log(req.body);
             return res.send(400, { message : "You need to log in first" });
         }
         if (user) {
