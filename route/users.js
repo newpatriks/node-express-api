@@ -129,7 +129,7 @@ exports.merge = function(req, res) {
     console.log("------------------------------------------------");
     var sn      = req.body.social;
     var info    = req.body[sn];
-    db.userModel.findOne({ 'access_token' : req.body.token}, function(err, user) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers)}, function(err, user) {
         if (err)
             return res.send(401, {message : err});
         

@@ -69,7 +69,7 @@ describe('User system', function() {
                             },
                             {
                                 "category": "Musician/band",
-                                "created_time" : "2013-03-25T18:02:40+0000",
+                                "created_time" : "2014-07-25T18:02:40+0000",
                                 "id": "99636325744",
                                 "name": "Django Django"
                             }
@@ -206,6 +206,7 @@ describe('User system', function() {
                     done();
                 });
         });
+        /*
         it('Should be possible remove the user we created', function(done) {
             request(url)
                 .delete('/user')
@@ -215,8 +216,28 @@ describe('User system', function() {
                     done();
                 });
         });
+        */
     });
 });
+/*
+describe('Interaction Between Users', function() {
 
 
+    it('Should return three users connected after created them', function(done) {
 
+    });
+
+    it('Should return a number of Shouted outs of 0', function() {
+        
+    });
+
+    it('Should return 200 http code after Shouted out one of them', function() {
+        
+    });
+
+    it('Should return a number of Shouted outs equal or more than 1', function() {
+        
+    });
+
+});
+*/
