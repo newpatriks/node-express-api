@@ -6,6 +6,7 @@ var db          = require('../config/mongo_db');
 
 describe('User system', function() {
     var url     = 'http://localhost:5000';
+    //var url     = 'http://lockedin.kentlyons.com/';
     var token   = '';
     before(function(done) {
         while (!db.userModel) {
@@ -34,8 +35,8 @@ describe('User system', function() {
                     done();
                 });
         });
-        it('Should return a 401 http code', function(done) {
-            (response.status).should.be.exactly(401); 
+        it('Should return a 401 http code to the "protected" calls', function(done) {
+            (response.status).should.be.exactly(401);
             done();
         });
     });
@@ -44,7 +45,7 @@ describe('User system', function() {
             var profile = {
                 social : 'facebook',
                 token : '',
-                facebook : {
+                facebook: {
                     "email": "test@lockedin.com",
                     "first_name": "Test",
                     "gender": "male",
@@ -57,7 +58,23 @@ describe('User system', function() {
                     "thumbnail": "http://graph.facebook.com/id_test/picture",
                     "timezone": "1",
                     "updated_time": "2014-02-08T16:31:07+0000",
-                    "verified": "true"
+                    "verified": "true",
+                    "music": {
+                        "data": [
+                            {
+                                "category": "Musician/band",
+                                "created_time" : "2013-03-25T18:02:40+0000",
+                                "id": "99636325744",
+                                "name": "Django Django"
+                            },
+                            {
+                                "category": "Musician/band",
+                                "created_time" : "2013-03-25T18:02:40+0000",
+                                "id": "99636325744",
+                                "name": "Django Django"
+                            }
+                        ]
+                    }
                 },
                 twitter : {},
                 instagram : {}
@@ -75,9 +92,9 @@ describe('User system', function() {
         });
         it('Should return a token with JSON format after login', function(done) {
             var profile = {
-                social : 'facebook',
-                token : '',
-                facebook : {
+                social: 'facebook',
+                token: '',
+                facebook: {
                     "email": "test@lockedin.com",
                     "first_name": "Test",
                     "gender": "male",
@@ -90,10 +107,26 @@ describe('User system', function() {
                     "thumbnail": "http://graph.facebook.com/id_test/picture",
                     "timezone": "1",
                     "updated_time": "2014-02-08T16:31:07+0000",
-                    "verified": "true"
+                    "verified": "true",
+                    "music": {
+                        "data": [
+                            {
+                                "category": "Musician/band",
+                                "created_time" : "2013-03-25T18:02:40+0000",
+                                "id": "99636325744",
+                                "name": "Django Django"
+                            },
+                            {
+                                "category": "Musician/band",
+                                "created_time" : "2013-03-25T18:02:40+0000",
+                                "id": "99636325744",
+                                "name": "Django Django"
+                            }
+                        ]
+                    }
                 },
-                twitter : {},
-                instagram : {}
+                twitter: {},
+                instagram: {}
             };
         request(url)
             .post('/user')
@@ -115,7 +148,6 @@ describe('User system', function() {
             request(url)
                 .get('/user')
                 .set('Authorization', 'Bearer ' + token)
-                .send(profile)
                 .end(function (req,res) {
                     response = res;
                     done();
@@ -126,8 +158,9 @@ describe('User system', function() {
             done();
         });
         it('Should return the information about the user calling /user [get]', function(done) {
-            (response.body.data.facebook[0]['name']).should.be.eql('Test Lockedin');
-            (response.body.data.facebook[0]['email']).should.be.eql('test@lockedin.com');
+            (response.body.data.facebook['name']).should.be.eql('Test Lockedin');
+            (response.body.data.facebook['email']).should.be.eql('test@lockedin.com');
+            (response.body.data.facebook['music'].data[0].category).should.be.eql('Musician/band');
             done();
         });
         it('Should update the information of the user calling user/merge | Twitter profile', function(done) {
@@ -148,23 +181,37 @@ describe('User system', function() {
                 .set('Authorization', 'Bearer ' + token)
                 .send(profile)
                 .end(function (req,res) {
-                    (res.body.data.twitter[0]['name']).should.be.eql('Jordi');
-                    (res.body.data.twitter[0]['username']).should.be.eql('newpatriks');
-                    (res.body.data.twitter[0]['email']).should.be.eql('newpatriks@gmail.com');
+                    (res.body.data.twitter['name']).should.be.eql('Jordi');
+                    (res.body.data.twitter['username']).should.be.eql('newpatriks');
+                    (res.body.data.twitter['email']).should.be.eql('newpatriks@gmail.com');
                     done();
                 });
         });
         it('Should list the users that are online', function(done) {
-            var profile = {
-                token : token
-            };
             request(url)
                 .get('/users/all')
                 .set('Authorization', 'Bearer ' + token)
-                .send(profile)
                 .end(function (req,res) {
                     var data = JSON.parse(res.text)['data'];
                     (data.length).should.be.above(0);
+                    done();
+                });
+        });
+        it('Should return code 200 after logout this session', function(done) {
+            request(url)
+                .post('/user/logout')
+                .set('Authorization', 'Bearer ' + token)
+                .end(function (req,res) {
+                    (res.status).should.be.exactly(200);
+                    done();
+                });
+        });
+        it('Should be possible remove the user we created', function(done) {
+            request(url)
+                .delete('/user')
+                .set('Authorization', 'Bearer ' + token)
+                .end(function (req,res) {
+                    (res.status).should.be.exactly(200);
                     done();
                 });
         });

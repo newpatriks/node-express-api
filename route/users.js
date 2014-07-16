@@ -33,7 +33,7 @@ exports.register = function(req, res) {
                             }
                             return val;
                         });
-                        user[sn] = seen;
+                        user[sn] = seen[0];
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
@@ -82,7 +82,7 @@ exports.register = function(req, res) {
                             }
                             return val;
                         });
-                        user[sn] = seen;
+                        user[sn] = seen[0];
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
@@ -147,7 +147,7 @@ exports.merge = function(req, res) {
                 }
                 return val;
             });
-            user[sn] = seen;
+            user[sn] = seen[0];
             user.save();
             return res.send(200, { data : user });
         }
@@ -163,10 +163,7 @@ exports.status = function(req, res) {
             return res.send(401, { message : err });
         }
         if (!user) {
-            console.log("!user -----------------------------");
-            console.log(secret);
-            console.log("FI !user -----------------------------");
-            return res.send(400, { message : "fuck: "+tokenManager.getToken(req.headers) });
+            return res.send(400, { message : "You've to be logged in" });
         }
         if (user) {
             return res.send(200, { data : user });
@@ -175,7 +172,7 @@ exports.status = function(req, res) {
 }
 
 exports.logout = function(req, res) {
-    db.userModel.update({ 'access_token' : req.body.token }, {'online' : false}, function(err, result) { 
+    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers) }, {'online' : false}, function(err, result) { 
         if (err)
            return res.send(401, { message : err }); 
 
@@ -184,7 +181,7 @@ exports.logout = function(req, res) {
 }
 
 exports.remove = function(req, res) {
-    db.userModel.remove({ 'access_token' : req.body.token}, function(err, result) {
+    db.userModel.remove({ 'access_token' : tokenManager.getToken(req.headers)}, function(err, result) {
         if (err)
             return res.send(401, { message : err });
         
