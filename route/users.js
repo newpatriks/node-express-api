@@ -280,7 +280,7 @@ exports.send_shoutout = function(req, res) {
     var id_s;
 
     // Save at the emiter of the shout out.
-    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { $push: { 'shoutouts_s': id_r }}, function(err, result) {
+    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { $addToSet: { 'shoutouts_s': id_r }}, function(err, result) {
         if (err) {
             console.log(err);
             return res.send(400, { message : "Some error occurred updating the shout outs." });  
@@ -289,7 +289,7 @@ exports.send_shoutout = function(req, res) {
         db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
             id_s = result._id;
             
-            db.userModel.update({ _id : id_r }, { $push: { 'shoutouts_r': id_s }}, function(err, result) {
+            db.userModel.update({ _id : id_r }, { $addToSet: { 'shoutouts_r': id_s }}, function(err, result) {
                 if (err) {
                     console.log(err);
                     return res.send(400, { message : "Some error occurred updating the shout outs." });
