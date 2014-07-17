@@ -31,8 +31,8 @@ var User = new Schema({
     access_token    : String,
     latitude        : { type: String, 'default':''},
     longitude       : { type: String, 'default':''},
-    shoutouts_r     : { type: [String], 'default': []},
-    shoutouts_s     : { type: [String], 'default': []},
+    shoutouts_r     : { type: [String], 'default': [] },
+    shoutouts_s     : { type: [String], 'default': [] },
     creationDate    : { type: Date, 'default':Date.now }
 });
 

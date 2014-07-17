@@ -276,8 +276,8 @@ exports.listAllNumber = function(req, res) {
 
 exports.send_shoutout = function(req, res) {
     // Save at receiver of the shout out
-    var id_r = req.params.id;
-    var id_s = '';
+    var id_r = req.body.id;
+    var id_s;
 
     // Save at the emiter of the shout out.
     db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { $push: { 'shoutouts_s': id_r }}, function(err, result) {
@@ -285,21 +285,19 @@ exports.send_shoutout = function(req, res) {
             console.log(err);
             return res.send(400, { message : "Some error occurred updating the shout outs." });  
         }
+
+        db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
+            id_s = result._id;
+            
+            db.userModel.update({ _id : id_r }, { $push: { 'shoutouts_r': id_s }}, function(err, result) {
+                if (err) {
+                    console.log(err);
+                    return res.send(400, { message : "Some error occurred updating the shout outs." });
+                }
+                return res.json(200);
+            });    
+        });
     });
-
-    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
-        id_s = result._id;
-    });
-
-
-    db.userModel.update({ _id : id_r }, { $push: { 'shoutouts_r': id_s }}, function(err, result) {
-        if (err) {
-            console.log(err);
-            return res.send(400, { message : "Some error occurred updating the shout outs." });
-        }
-    });
-
-    return res.json(200);
 };
 
 exports.shoutouts = function(req, res) {

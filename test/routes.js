@@ -453,22 +453,37 @@ describe('Interaction Between Users', function() {
                 .get('/shoutout')
                 .set('Authorization', 'Bearer ' + token)
                 .end(function (req,res) {
-                    (res.body.data.shoutouts_s.length).should.be.eql(0);
-                    (res.body.data.shoutouts_r.length).should.be.eql(0);
+                    data = JSON.parse(res.text)['data'];
+                    (data.shoutouts_s.length).should.be.eql(0);
+                    (data.shoutouts_r.length).should.be.eql(0);
                     done();
                 });
         });
         
-        it('POST /shoutout/:user-2 Should return 200 code', function(done) {
+        it('POST /shoutout to User-2 Should return 200 code', function(done) {
+            var data = {
+                'id' : id_user2
+            }
             request(url)
-                .post('/shoutout/'+id_user2)
+                .post('/shoutout')
                 .set('Authorization', 'Bearer ' + token)
+                .send(data)
                 .end(function (req,res) {
 
                     done();
                 });
         });
         
+        it('Should return a number of Shouted above 0', function(done) {
+            request(url)
+                .get('/shoutout')
+                .set('Authorization', 'Bearer ' + token)
+                .end(function (req,res) {
+                    data = JSON.parse(res.text)['data'];
+                    (data.shoutouts_s.length).should.be.above(0);
+                    done();
+                });
+        });
 
     });
 /*
