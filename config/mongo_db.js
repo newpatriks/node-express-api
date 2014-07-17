@@ -25,11 +25,14 @@ var User = new Schema({
     facebook        : Object,
     twitter         : Object,
     google          : Object,
+    instagram       : Object,
     is_dj           : { type: Boolean, default: false },
     online          : { type: Boolean, default: true },
     access_token    : String,
-    latitude        : String,
-    longitude       : String,
+    latitude        : { type: String, 'default':''},
+    longitude       : { type: String, 'default':''},
+    shoutouts_r     : { type: [String], 'default': []},
+    shoutouts_s     : { type: [String], 'default': []},
     creationDate    : { type: Date, 'default':Date.now }
 });
 

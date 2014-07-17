@@ -34,11 +34,15 @@ routes.users    = require('./route/users.js');
 
 
 // CALLS
-app.post('/user', routes.users.register);
-app.delete('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.remove);
-app.get('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.status);
+app.post('/user', routes.users.register);                                                                           // Creates a new user
+app.delete('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.remove);              // Remove that user from the db
+app.get('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.status);                 // Returns the information about the current user
 
-app.post('/user/merge', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);
-app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.logout);
+app.post('/user/merge', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);           // Marge accounts with current account
+app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.logout);         // Logout the user
 
-app.get('/users/all', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.listAll);
+app.get('/users/all/:numpage', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.listAll);  // Return the users connected separated by pages
+app.get('/users/number', routes.users.listAllNumber);                                                               // Return the number of users connected
+
+app.post('/shoutout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.send_shoutout);  
+app.get('/shoutout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.shoutouts);  

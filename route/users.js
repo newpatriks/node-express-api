@@ -92,7 +92,7 @@ exports.register = function(req, res) {
                     if (user) {
                         console.log(".........This user already exist");
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'twitter.email' : info.email }, {'access_token' : token}, function(err, result) {
+                        db.userModel.update({ 'twitter.email' : info.email }, {'access_token' : token, 'twitter.status.text' : info.status.text }, function(err, result) {
                             if (err) {
                                 console.log('Error updating: ' + err);
                                 //res.send({'error':'An error has occurred'});
@@ -113,6 +113,57 @@ exports.register = function(req, res) {
 
         case 'g+':
             console.log("G+ Login");
+            break;
+
+        case 'instagram':
+
+            console.log("Instagram Login");
+            var info    = req.body[sn];
+            // 1. CHECK DE [EMAIL] AND [SOCIAL]
+            if (info) {
+                db.userModel.findOne({ 'instagram.email' : info.email}, function(err, user) {
+                    if (err)
+                        return res.send(401, {message : err});
+                    if (!user) {
+                    // 2.1. IF !EXIST (IT'S NEW)
+                        // 2.1.1. REGISTER
+                        var user = new db.userModel();
+                        var seen = [];
+                        JSON.stringify(info, function(key, val) {
+                            if (val != null && typeof val == "object") {
+                                if (seen.indexOf(val) >= 0)
+                                    return
+                                seen.push(val)
+                            }
+                            return val;
+                        });
+                        user[sn] = seen[0];
+                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                        user.access_token = token;
+                        user.save();
+                        // 2.1.2. CREATE & RETURN TOKEN
+                        return res.send(200, { token : token });
+                    }
+                    if (user) {
+                        console.log(".........This user already exist");
+                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                        db.userModel.update({ 'instagram.email' : info.email }, {'access_token' : token}, function(err, result) {
+                            if (err) {
+                                console.log('Error updating: ' + err);
+                                //res.send({'error':'An error has occurred'});
+                            } else {
+                                console.log('' + result + ' document(s) updated');
+                                //res.send(user);
+                            }
+                        });
+                        res.status(200);
+                        res.send({ token : token });
+                        return res;
+                    }
+                });
+            }else{
+                return res.send(400, { message : "The information needs to be in a proper scheme" });
+            }
             break;
 
         case 'bbc':
@@ -151,7 +202,6 @@ exports.merge = function(req, res) {
             user.save();
             return res.send(200, { data : user });
         }
-
     });    
 
 }
@@ -190,12 +240,15 @@ exports.remove = function(req, res) {
 }
 
 exports.listAll = function(req, res) {
-    console.log("List All --------------");
+    var nPerPage = 15;
+    var pageNumber = req.params.numpage;
+
     if (!req.user) 
         return res.send(401, { message : "You need to be Logged to do call this petition" });
 
-    var query = db.userModel.find({ 'online' : true });
-    query.sort('-created');
+    var query = db.userModel.find({ 'online' : true }).skip( (pageNumber-1)*nPerPage ).limit(nPerPage);
+    //query.sort('-created');
+    
     query.exec(function(err, results) {
         if (err) {
             console.log(err);
@@ -208,4 +261,58 @@ exports.listAll = function(req, res) {
         */
         return res.json(200, { data : results });
     });
+};
+
+exports.listAllNumber = function(req, res) {
+    var query = db.userModel.find({ 'online' : true }).count();
+    query.exec(function(err, results) {
+        if (err) {
+            console.log(err);
+            return res.send(400, { message : "Seems to be something wrong in the information" });
+        }
+        return res.json(200, { data : results });
+    });
+};
+
+exports.send_shoutout = function(req, res) {
+    // Save at receiver of the shout out
+    var id_r = req.params.id;
+    var id_s = '';
+
+    // Save at the emiter of the shout out.
+    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { $push: { 'shoutouts_s': id_r }}, function(err, result) {
+        if (err) {
+            console.log(err);
+            return res.send(400, { message : "Some error occurred updating the shout outs." });  
+        }
+    });
+
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
+        id_s = result._id;
+    });
+
+
+    db.userModel.update({ _id : id_r }, { $push: { 'shoutouts_r': id_s }}, function(err, result) {
+        if (err) {
+            console.log(err);
+            return res.send(400, { message : "Some error occurred updating the shout outs." });
+        }
+    });
+
+    return res.json(200);
+};
+
+exports.shoutouts = function(req, res) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
+        if (err) {
+            console.log();
+            return res.send(401, { message : err });
+        }
+        if (!user) {
+            return res.send(400, { message : "You've to be logged in" });
+        }
+        if (user) {
+            return res.send(200, { data : user });
+        }
+    });    
 };
