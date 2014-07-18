@@ -189,6 +189,34 @@ $.ajax({
 });
 ```
 
+#GET user/preferences
+
+Will return the information in USER > PREFERENCES only.
+
+**Resource URL**
+/user/preferences
+
+##Parameters
+*No parameters*
+
+##Headers
+
+**Authorization** type **Bearer**
+
+##Example
+```javascript
+$.ajax({
+	beforeSend: function (xhr) {
+		xhr.setRequestHeader ("Authorization", "Bearer "+token);
+	},
+	type: "GET",
+	url: url_root+"/user/preferences",
+   data: data
+}).done(function(msg) {
+   console.log(msg);
+});
+```
+
 
 #POST user/merge
 
