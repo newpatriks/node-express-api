@@ -280,7 +280,7 @@ exports.remove = function(req, res) {
 }
 
 exports.listAll = function(req, res) {
-    var nPerPage = 15;
+    var nPerPage = 3;
     var pageNumber = req.params.numpage;
 
     if (!req.user) 
