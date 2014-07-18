@@ -159,8 +159,9 @@ describe('User system', function() {
         });
     });
     describe('When Authorized', function() {
-        var response;
-        beforeEach(function (done) {
+        var response,
+            user_profile;
+        before(function (done) {
             request(url)
                 .get('/user')
                 .set('Authorization', 'Bearer ' + token)
@@ -185,10 +186,43 @@ describe('User system', function() {
                 token : token,
                 facebook    : {},
                 twitter     : {
-                    "email": "newpatriks@gmail.com",
-                    "name": "Jordi",
-                    "location": "London",
-                    "username": "newpatriks"
+                    "lang": "es",
+                    "statuses_count": 2625,
+                    "verified": false,
+                    "geo_enabled": true,
+                    "time_zone": "Madrid",
+                    "utc_offset": 7200,
+                    "favourites_count": 22,
+                    "created_at": "Thu Dec 20 13:11:11 +0000 2007",
+                    "listed_count": 15,
+                    "friends_count": 324,
+                    "followers_count": 391,
+                    "protected": false,
+                    "entities": {
+                        "description": {
+                            "urls": []
+                        },
+                        "url": {
+                            "urls": [
+                                {
+                                    "indices": [
+                                        0,
+                                        22
+                                    ],
+                                    "display_url": "jordillobet.es",
+                                    "expanded_url": "http://jordillobet.es",
+                                    "url": "http://t.co/iAoBPlTwc4"
+                                }
+                            ]
+                        }
+                    },
+                    "url": "http://t.co/iAoBPlTwc4",
+                    "description": "Developer lover. Barcelona.",
+                    "location": "Barcelona",
+                    "screen_name": "newpatriks",
+                    "name": "newpatriks",
+                    "id_str": "11370712",
+                    "id": 11370712
                 },
                 instagram : {}
             };
@@ -197,9 +231,8 @@ describe('User system', function() {
                 .set('Authorization', 'Bearer ' + token)
                 .send(profile)
                 .end(function (req,res) {
-                    (res.body.data.twitter['name']).should.be.eql('Jordi');
-                    (res.body.data.twitter['username']).should.be.eql('newpatriks');
-                    (res.body.data.twitter['email']).should.be.eql('newpatriks@gmail.com');
+                    (res.body.data.twitter['screen_name']).should.be.eql('newpatriks');
+                    (res.body.data.twitter['location']).should.be.eql('Barcelona');
                     done();
                 });
         });
@@ -235,6 +268,33 @@ describe('User system', function() {
                     (res.body.data.instagram.data['website']).should.be.eql('http://snoopdogg.com');
                     done();
                 });
+        });
+        it('Should return the information with instagram and twitter', function(done) {
+            request(url)
+                .get('/user')
+                .set('Authorization', 'Bearer ' + token)
+                .end(function (req,res) {
+                    user_profile = res.body.data;
+                    user_profile.should.not.be.eql('');
+                    (res.status).should.be.exactly(200);
+                    done();
+                });
+        });
+        describe('Modifying user before PUT', function() {
+            before(function (done) {
+                user_profile.preferences.description = user_profile.twitter.description;
+                done();
+            });
+            it('Should return 200 after PUT /user', function(done) {
+                request(url)
+                    .put('/user')
+                    .set('Authorization', 'Bearer ' + token)
+                    .send(user_profile)
+                    .end(function (req,res) {
+                        (res.status).should.be.exactly(200);
+                        done();
+                    });
+            });
         });
         it('Should list the users that are online', function(done) {
             request(url)
@@ -469,18 +529,19 @@ describe('Interaction Between Users', function() {
                 .set('Authorization', 'Bearer ' + token)
                 .send(data)
                 .end(function (req,res) {
-
+                    (res.status).should.be.exactly(200);
                     done();
                 });
         });
         
-        it('Should return a number of Shouted above 0', function(done) {
+        it('Should return a number of Shouted outs sended above 0', function(done) {
             request(url)
                 .get('/shoutout')
                 .set('Authorization', 'Bearer ' + token)
                 .end(function (req,res) {
                     data = JSON.parse(res.text)['data'];
                     (data.shoutouts_s.length).should.be.above(0);
+                    (res.status).should.be.exactly(200);
                     done();
                 });
         });

@@ -22,17 +22,22 @@ var Schema = mongoose.Schema;
 
 // User schema
 var User = new Schema({
+    access_token    : String,
+    online          : { type: Boolean, default: true },
+    advice_accepted : { type: Boolean, default: false },
+    shoutouts_r     : { type: [String], 'default': [] },
+    shoutouts_s     : { type: [String], 'default': [] },
     facebook        : Object,
     twitter         : Object,
     google          : Object,
     instagram       : Object,
-    is_dj           : { type: Boolean, default: false },
-    online          : { type: Boolean, default: true },
-    access_token    : String,
-    latitude        : { type: String, 'default':''},
-    longitude       : { type: String, 'default':''},
-    shoutouts_r     : { type: [String], 'default': [] },
-    shoutouts_s     : { type: [String], 'default': [] },
+    preferences     : {
+        image           : String,
+        description     : String,
+        is_dj           : { type: Boolean,'default': false },
+        latitude        : { type: String, 'default': ''},
+        longitude       : { type: String, 'default': ''}
+    },
     creationDate    : { type: Date, 'default':Date.now }
 });
 

@@ -34,6 +34,10 @@ exports.register = function(req, res) {
                             return val;
                         });
                         user[sn] = seen[0];
+
+                        user.preferences.image = user[sn].picture;
+                        user.preferences.description = '';
+
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
@@ -83,6 +87,10 @@ exports.register = function(req, res) {
                             return val;
                         });
                         user[sn] = seen[0];
+
+                        user.preferences.image = user[sn].profile_img_url;
+                        user.preferences.description = user[sn].description;
+                        
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
@@ -173,6 +181,28 @@ exports.register = function(req, res) {
         default:
             return res.send(400, { message : "You need to log in with some social network" });
     }
+}
+
+exports.update = function(req, res) {
+    db.userModel.update({ '_id' : req.body._id }, { 'preferences' : req.preferences } , function(err, result) {
+        if (err)
+           return res.send(401, { message : err }); 
+
+        return res.send(200, {message : result});
+    });
+}
+
+exports.preferences = function(req, res) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers)}, function(err, user) {
+        if (err)
+            return res.send(401, {message : err});
+        
+        if (!user) {
+            return res.send(400, { message : "You need to log in first" });
+        }
+
+        return res.send(200, { data : user.preferences });
+    });
 }
 
 exports.merge = function(req, res) {
