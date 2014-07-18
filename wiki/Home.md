@@ -1,6 +1,8 @@
 # Welcome
 
-Welcome to your wiki! This is the default page we've installed for your convenience. Go ahead and edit it.
+
+[User](https://bitbucket.org/kentlyons/lockedin-api/wiki/edit/wiki/User)
+
 
 ## Wiki features
 
