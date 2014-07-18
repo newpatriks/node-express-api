@@ -1,7 +1,4 @@
-+ [Send a Shout out](#post_shoutout)
-+ [My Shout outs](#get_shoutout)
-
-#<a name="post_shoutout"></a>POST shoutout/
+#POST shoutout/
 
 This call lets notify to the API that the user logged in is shoutting out another user.
 
@@ -28,7 +25,7 @@ $.ajax({
 });
 ```
 
-#<a name="get_shoutout"></a>GET shoutout/
+#GET shoutout/
 
 Will return all the shout outs that the user logged in has received.
 
