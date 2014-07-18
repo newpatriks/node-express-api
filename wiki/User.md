@@ -286,3 +286,36 @@ $.ajax({
    console.log(msg);
 });
 ```
+
+#PUT /user/online/
+
+Call to modify the user status on the application. When the users close the app the system will call to this call to "disconnect" the user but not logout.
+
+**Resource URL**
+/user/online
+
+##Parameters
+
+The parameters has to be an entire object of the user information. The object has to have the 'preferences' field:
+
+```javascript
+var data = { connected : false }
+```
+
+##Headers
+
+**Authorization** type **Bearer**
+
+##Example
+```javascript
+$.ajax({
+	beforeSend: function (xhr) {
+		xhr.setRequestHeader ("Authorization", "Bearer "+token);
+	},
+	type: "PUT",
+	data : data
+	url: url_root+"/user/online",
+}).done(function(msg) {
+   console.log(msg);
+});
+```
