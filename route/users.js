@@ -207,7 +207,7 @@ exports.preferences = function(req, res) {
 
 exports.onlineUpdate = function(req, res) {
     var value = req.body.online; // Bolean
-    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)} }, { 'online' : value } , function(err, result) {
+    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { 'online' : value } , function(err, result) {
         if (err)
            return res.send(401, { message : err }); 
 
