@@ -1,8 +1,9 @@
 # Welcome
 
 
-[User](https://bitbucket.org/kentlyons/lockedin-api/wiki/edit/wiki/User)
-
++ [User](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/User)
++ [Users](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Users)
++ [Shout outs](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Shoutouts)
 
 ## Wiki features
 
