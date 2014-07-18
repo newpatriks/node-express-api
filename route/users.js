@@ -146,6 +146,10 @@ exports.register = function(req, res) {
                             return val;
                         });
                         user[sn] = seen[0];
+
+                        user.preferences.image = user[sn].data.profile_picture;
+                        user.preferences.description = user[sn].data.bio;
+
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
