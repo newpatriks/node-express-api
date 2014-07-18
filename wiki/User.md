@@ -183,7 +183,7 @@ $.ajax({
 	},
 	type: "PUT",
 	data : profile
-	url: url_root+"/user/logout",
+	url: url_root+"/user",
 }).done(function(msg) {
    console.log(msg);
 });
