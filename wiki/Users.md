@@ -1,7 +1,4 @@
-+ [List all users lockedIn](#users_lockedin)
-+ [Number of users lockedIn](#number_users_lockedin)
-
-#<a name="users_lockedin"></a>GET users/all/:numpage
+#GET users/all/:numpage
 
 This call will return a list of all the users that are lockedIn at this moment with all their information. With the parameter of **numpage** will specify the page number that we want to show. The pages will show 15 elements, variable predefined at the server.
 
@@ -28,7 +25,7 @@ $.ajax({
 });
 ```
 
-#<a name="number_users_lockedin"></a>GET users/number
+#GET users/number
 
 The call will return only an integer, that will be the number of users connected to the app at this moment.
 
@@ -54,4 +51,3 @@ $.ajax({
    console.log(msg);
 });
 ```
-
