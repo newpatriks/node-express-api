@@ -118,7 +118,79 @@ $.ajax({
    console.log(msg);
 });
 ```
-#<a name="post_usermerge"></a>POST user/merge
+
+#PUT user/
+
+This call is to update the information about the user. Let us to change the picture and the description showed on the app.
+
+**Resource URL**
+/user
+
+##Parameters
+
+The parameters has to be an entire object of the user information. The object has to have the 'preferences' field:
+
+```javascript
+var profile = {
+	social : 'facebook', // We have to specify which social network we're going to use to register/login.
+   token : '',
+   facebook: {
+		"email": "test@lockedin.com",
+		"first_name": "Test",
+		"gender": "male",
+		"id": "123456789012345678",
+		"last_name": "Test",
+		"link": "https://www.facebook.com/app_scoped_user_id/id_test/",
+		"locale": "en_UK",
+		"name": "Test",
+		"picture": "http://graph.facebook.com/id_test/picture",
+		"thumbnail": "http://graph.facebook.com/id_test/picture",
+		"timezone": "1",
+		"updated_time": "2014-02-08T16:31:07+0000",
+		"verified": "true",
+		"music": {
+			"data": [{
+				"category": "Musician/band",
+				"created_time" : "2013-03-25T18:02:40+0000",
+				"id": "99636325744",
+	          "name": "Band name 1"
+			},{
+				"category": "Musician/band",
+				"created_time" : "2014-07-25T18:02:40+0000",
+	          "id": "99636325744",
+				"name": "Band name 2"
+			}]
+		}
+	},
+	twitter : {},
+	instagram : {},
+	preferences : {
+		image: '...',
+		description: '...'
+	},
+};
+```
+
+##Headers
+
+**Authorization** type **Bearer**
+
+##Example
+```javascript
+$.ajax({
+	beforeSend: function (xhr) {
+		xhr.setRequestHeader ("Authorization", "Bearer "+token);
+	},
+	type: "PUT",
+	data : profile
+	url: url_root+"/user/logout",
+}).done(function(msg) {
+   console.log(msg);
+});
+```
+
+
+#POST user/merge
 
 This call will merge the information about the user is logged in, with the information that we are sending. The point is to be possible to merge different social networks accounts to the same user.
 
