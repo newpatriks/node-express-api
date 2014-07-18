@@ -1,10 +1,4 @@
-+ [Register / Login](#post_user)
-+ [Information about the user](#get_user)
-+ [Remove the user](#remove_user)
-+ [Merge social networks](#post_usermerge)
-+ [Logout session](#post_userlogout)
-
-#<a name="post_user"></a>POST user/
+#POST user/
 
 Will create a user and will be saved at mongodb. This call will return a valid token as well. The token will be valid for the next 60 minutes, and will be saved in a Redis db. Each next call will need this token be sent throught the Headers parameters.
 
@@ -68,7 +62,7 @@ $.ajax({
 });
 ```
 
-#<a name="get_user"></a>GET user/
+#GET user/
 
 Will return the information of the user logged in. Does not need any get parameter, only the token at the header. 
 
@@ -97,7 +91,7 @@ $.ajax({
 });
 ```
 
-#<a name="delete_user"></a>DELETE user/
+#DELETE user/
 
 Will remove the user that are logged in. 
 
@@ -165,7 +159,7 @@ $.ajax({
    console.log(msg);
 });
 ```
-#<a name="post_userlogout"></a>POST user/logout
+#POST user/logout
 
 This call will logout the session of the user logged in.
 
