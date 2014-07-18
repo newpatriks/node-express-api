@@ -1,42 +1,14 @@
 # Welcome
 
-Welcome to your wiki! This is the default page we've installed for your convenience. Go ahead and edit it.
 
-## Wiki features
+## [User](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/User)
 
-This wiki uses the [Markdown](http://daringfireball.net/projects/markdown/) syntax.
+All the calls and the information related about the /user stuff. Calls to register, to login, get the information about the user, logout and delete. Know the parameters that be need to pass in each call and see an examples with $.ajax jquery call.
 
-The wiki itself is actually a git repository, which means you can clone it, edit it locally/offline, add images or any other file type, and push it back to us. It will be live immediately.
+## [Users](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Users)
 
-Go ahead and try:
+All the information about the calls related to many users. For example, to see all the users connected at this moment.
 
-```
-$ git clone https://kentlyons@bitbucket.org/kentlyons/lockedin-api.git/wiki
-```
+## [Shout outs](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Shoutouts)
 
-Wiki pages are normal files, with the .md extension. You can edit them locally, as well as creating new ones.
-
-## Syntax highlighting
-
-
-You can also highlight snippets of text (we use the excellent [Pygments][] library).
-
-[Pygments]: http://www.pygments.org/
-
-
-Here's an example of some Python code:
-
-```
-#!python
-
-def wiki_rocks(text):
-    formatter = lambda t: "funky"+t
-    return formatter(text)
-```
-
-
-You can check out the source of this page to see how that's done, and make sure to bookmark [the vast library of Pygment lexers][lexers], we accept the 'short name' or the 'mimetype' of anything in there.
-[lexers]: http://pygments.org/docs/lexers/
-
-
-Have fun!
+All the calls related to the Shout out. To make a "shout out" and to know who "Shouted out" the user logged in.
