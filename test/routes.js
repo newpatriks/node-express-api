@@ -423,33 +423,47 @@ describe('Interaction Between Users', function() {
     describe('Creating User 3', function() { 
         it('POST /user Should return 200 code', function(done) {
             var user = {
-                social : 'facebook',
+                social : 'twitter',
                 token : '',
-                facebook: {
-                    "email": "user_3@lockedin.com",
-                    "first_name": "User 3",
-                    "gender": "male",
-                    "id": "10154355075120086",
-                    "last_name": "Test",
-                    "verified": "true",
-                    "music": {
-                        "data": [
-                            {
-                                "category": "Musician/band",
-                                "created_time" : "2013-03-25T18:02:40+0000",
-                                "id": "99636325744",
-                                "name": "Django Django"
-                            },
-                            {
-                                "category": "Musician/band",
-                                "created_time" : "2014-07-25T18:02:40+0000",
-                                "id": "99636325744",
-                                "name": "Django Django"
-                            }
-                        ]
-                    }
+                twitter     : {
+                    "lang": "es",
+                    "statuses_count": 2625,
+                    "verified": false,
+                    "geo_enabled": true,
+                    "time_zone": "Madrid",
+                    "utc_offset": 7200,
+                    "favourites_count": 22,
+                    "created_at": "Thu Dec 20 13:11:11 +0000 2007",
+                    "listed_count": 15,
+                    "friends_count": 324,
+                    "followers_count": 391,
+                    "protected": false,
+                    "entities": {
+                        "description": {
+                            "urls": []
+                        },
+                        "url": {
+                            "urls": [
+                                {
+                                    "indices": [
+                                        0,
+                                        22
+                                    ],
+                                    "display_url": "jordillobet.es",
+                                    "expanded_url": "http://jordillobet.es",
+                                    "url": "http://t.co/iAoBPlTwc4"
+                                }
+                            ]
+                        }
+                    },
+                    "url": "http://t.co/iAoBPlTwc4",
+                    "description": "Developer lover. Barcelona.",
+                    "location": "Barcelona",
+                    "screen_name": "user_3",
+                    "name": "newpatriks",
+                    "id_str": "11370712",
+                    "id": 11370712
                 },
-                twitter : {},
                 instagram : {}
             };
             request(url)
@@ -474,7 +488,7 @@ describe('Interaction Between Users', function() {
                 .get('/user')
                 .set('Authorization', 'Bearer ' + token)
                 .end(function (req,res) {
-                    (res.body.data.facebook.first_name).should.be.eql('User 3');
+                    (res.body.data.twitter.screen_name).should.be.eql('user_3');
                     done();
                 });
         });
