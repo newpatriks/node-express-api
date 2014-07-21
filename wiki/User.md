@@ -286,3 +286,52 @@ $.ajax({
    console.log(msg);
 });
 ```
+
+#POST user/reftoken
+
+This is to regenerate a new token for the users that are logged in and the token has expired. The idea is that when another call returns a 401 HTTP code, will call this function and will check if the user is online or not.
+
+**Resource URL**
+/user/reftoken
+
+##Parameters
+*No parameters*
+
+
+##Headers
+
+**Authorization** type **Bearer**
+
+##Example
+```javascript
+var token = "";
+actionRequested();
+
+function actionRequested() {
+    $.ajax({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Bearer "+token);
+        },
+        type: "GET",
+        url: url_root+"/user",
+        error : function(xhr, msg) {
+            if (xhr.status === 401) {
+                // REFRESH TOKEN
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader ("Authorization", "Bearer "+token);
+                    },
+                    type: "POST",
+                    url: url_root+"/user/reftoken"
+                }).done(function(msg) {
+                    token = msg.token;
+                    // Recursive call to re-enter at the function and succeed on the ajax call.
+                    actionRequested();
+                });            
+            }
+        }
+    }).done(function(msg, xhr) {
+        console.log(xhr + " | "+ msg);
+    });    
+}
+```
