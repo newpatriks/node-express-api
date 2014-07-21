@@ -70,7 +70,7 @@ exports.register = function(req, res) {
             var info    = req.body[sn];
             // 1. CHECK DE [EMAIL] AND [SOCIAL]
             if (info) {
-                db.userModel.findOne({ 'twitter.email' : info.email}, function(err, user) {
+                db.userModel.findOne({ 'twitter.screen_name' : info.screen_name}, function(err, user) {
                     if (err)
                         return res.send(401, {message : err});
                     if (!user) {
@@ -88,7 +88,7 @@ exports.register = function(req, res) {
                         });
                         user[sn] = seen[0];
 
-                        user.preferences.image = user[sn].profile_image_url;
+                        user.preferences.image = user[sn].  ;
                         user.preferences.description = user[sn].description;
                         
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
@@ -100,7 +100,7 @@ exports.register = function(req, res) {
                     if (user) {
                         console.log(".........This user already exist");
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'twitter.email' : info.email }, {'access_token' : token}, function(err, result) {
+                        db.userModel.update({ 'twitter.screen_name' : info.screen_name }, {'access_token' : token}, function(err, result) {
                             if (err) {
                                 console.log('Error updating: ' + err);
                                 //res.send({'error':'An error has occurred'});
@@ -193,6 +193,18 @@ exports.update = function(req, res) {
            return res.send(401, { message : err }); 
 
         return res.send(200, {message : result});
+    });
+}
+
+exports.refresh_token = function(req, res) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers), 'online' : true }, function(err, user) {
+        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+        db.userModel.update({ '_id' : user._id},  { 'access_token' : token } , function(err, result) {
+            if (err)
+                return res.send(401, { message : err });
+
+            return res.send(200, { token : token });
+        });
     });
 }
 

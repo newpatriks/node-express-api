@@ -456,6 +456,8 @@ describe('Interaction Between Users', function() {
                             ]
                         }
                     },
+                    "profile_image_url_https": "https://pbs.twimg.com/profile_images/1215859364/charles_normal.jpg",
+                    "profile_image_url": "http://pbs.twimg.com/profile_images/1215859364/charles_normal.jpg",
                     "url": "http://t.co/iAoBPlTwc4",
                     "description": "Developer lover. Barcelona.",
                     "location": "Barcelona",

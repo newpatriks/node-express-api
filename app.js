@@ -51,7 +51,8 @@ app.delete('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken,
 app.get('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.status);                 // Returns the information about the current user
 
 app.put('/user/online', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.onlineUpdate);     // Will put the user as online / offline
-app.get('/user/preferences', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.preferences);     // Returns the information about the current user
+app.get('/user/preferences', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.preferences); // Returns the information about the current user
+app.post('/user/reftoken', routes.users.refresh_token);                                                               // Returns the information about the current user
 
 app.post('/user/merge', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);           // Marge accounts with current account
 app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.logout);         // Logout the user
