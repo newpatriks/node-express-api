@@ -188,7 +188,7 @@ exports.register = function(req, res) {
 }
 
 exports.update = function(req, res) {
-    db.userModel.update({ '_id' : req.body._id }, { 'preferences' : req.preferences } , function(err, result) {
+    db.userModel.update({ '_id' : req.body._id }, { 'preferences' : req.body.preferences } , function(err, result) {
         if (err)
            return res.send(401, { message : err }); 
 
