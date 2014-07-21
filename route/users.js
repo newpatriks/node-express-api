@@ -88,7 +88,7 @@ exports.register = function(req, res) {
                         });
                         user[sn] = seen[0];
 
-                        user.preferences.image = user[sn].  ;
+                        user.preferences.image = user[sn].profile_image_url;
                         user.preferences.description = user[sn].description;
                         
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
@@ -197,7 +197,7 @@ exports.update = function(req, res) {
 }
 
 exports.refresh_token = function(req, res) {
-    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers), 'online' : true }, function(err, user) {
+    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
         db.userModel.update({ '_id' : user._id},  { 'access_token' : token } , function(err, result) {
             if (err)
