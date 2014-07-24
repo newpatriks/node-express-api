@@ -34,6 +34,7 @@ var User = new Schema({
     preferences     : {
         image           : String,
         description     : String,
+        name            : String,        
         is_dj           : { type: Boolean,'default': false },
         latitude        : { type: String, 'default': ''},
         longitude       : { type: String, 'default': ''}

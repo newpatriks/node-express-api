@@ -35,8 +35,9 @@ exports.register = function(req, res) {
                         });
                         user[sn] = seen[0];
 
-                        user.preferences.image = user[sn].picture;
-                        user.preferences.description = '';
+                        user.preferences.image          = user[sn].picture;
+                        user.preferences.description    = '';
+                        user.preferences.name           = user[sn].name;
 
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
@@ -88,8 +89,9 @@ exports.register = function(req, res) {
                         });
                         user[sn] = seen[0];
 
-                        user.preferences.image = user[sn].profile_image_url;
-                        user.preferences.description = user[sn].description;
+                        user.preferences.image          = user[sn].profile_image_url;
+                        user.preferences.description    = user[sn].description;
+                        user.preferences.name           = user[sn].name;
                         
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;

@@ -32,11 +32,12 @@ if ('development' == app.get('env')) {
 
 // STARTUP SERVER
 
-//app.listen(port);
+app.listen(port);
 var routes      = {};
 routes.users    = require('./route/users.js');
 
 
+/*
 io.on('connection', function(socket){
   socket.emit('connected', { status: 'Hi there' });
   socket.on('spacebar', function (data) {
@@ -44,6 +45,7 @@ io.on('connection', function(socket){
   });
 });
 server.listen(3000);
+*/
 
 
 // CALLS
