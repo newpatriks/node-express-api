@@ -1,6 +1,6 @@
 var express           = require('express');
 var app               = express();
-var port              = process.env.PORT || 5000;
+var port              = process.env.PORT || 3000;
 var jwt               = require('express-jwt');
 var bodyParser        = require('body-parser');
 var morgan            = require('morgan');
@@ -9,15 +9,6 @@ var secret            = require('./config/secret');
 var server            = require('http').Server(app);
 var io                = require('socket.io')(server);
 
-/*
-server.listen(80);
-io.on('connection', function(socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function(data) {
-    console.log(data);
-  });
-});
-*/
 var allowCrossDomain  = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -32,6 +23,7 @@ var allowCrossDomain  = function(req, res, next) {
     }
 };
 
+
 if ('development' == app.get('env')) {
   app.use(allowCrossDomain);
   app.use(bodyParser());
@@ -39,9 +31,19 @@ if ('development' == app.get('env')) {
 }
 
 // STARTUP SERVER
-app.listen(port);  
+
+//app.listen(port);
 var routes      = {};
 routes.users    = require('./route/users.js');
+
+
+io.on('connection', function(socket){
+  socket.emit('connected', { status: 'Hi there' });
+  socket.on('spacebar', function (data) {
+    console.log(data);
+  });
+});
+server.listen(3000);
 
 
 // CALLS
@@ -52,7 +54,7 @@ app.get('/user', jwt({secret: secret.secretToken}), tokenManager.verifyToken, ro
 
 app.put('/user/online', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.onlineUpdate);     // Will put the user as online / offline
 app.get('/user/preferences', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.preferences); // Returns the information about the current user
-//app.post('/user/reftoken', routes.users.refresh_token);                                                               // Returns the information about the current user
+app.post('/user/reftoken', routes.users.refresh_token);                                                               // Returns the information about the current user
 
 app.post('/user/merge', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.merge);           // Marge accounts with current account
 app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.logout);         // Logout the user

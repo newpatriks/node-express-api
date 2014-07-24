@@ -120,7 +120,56 @@ exports.register = function(req, res) {
             break;
 
         case 'g+':
+            /*
             console.log("G+ Login");
+            var info    = req.body[sn];
+            // 1. CHECK DE [EMAIL] AND [SOCIAL]
+            if (info) {
+                db.userModel.findOne({ 'google.screen_name' : info.screen_name}, function(err, user) {
+                    if (err)
+                        return res.send(401, {message : err});
+                    if (!user) {
+                    // 2.1. IF !EXIST (IT'S NEW)
+                        // 2.1.1. REGISTER
+                        var user = new db.userModel();
+                        var seen = [];
+                        JSON.stringify(info, function(key, val) {
+                            if (val != null && typeof val == "object") {
+                                if (seen.indexOf(val) >= 0)
+                                    return
+                                seen.push(val)
+                            }
+                            return val;
+                        });
+                        user[sn] = seen[0];
+
+                        user.preferences.image = user[sn].profile_image_url;
+                        user.preferences.description = user[sn].description;
+                        
+                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                        user.access_token = token;
+                        user.save();
+                        // 2.1.2. CREATE & RETURN TOKEN
+                        return res.send(200, { token : token });
+                    }
+                    if (user) {
+                        console.log(".........This user already exist");
+                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                        db.userModel.update({ 'google.screen_name' : info.screen_name }, {'access_token' : token}, function(err, result) {
+                            if (err) {
+                                console.log('Error updating: ' + err);
+                                //res.send({'error':'An error has occurred'});
+                            } else {
+                                console.log('' + result + ' document(s) updated');
+                                //res.send(user);
+                            }
+                        });
+                        res.status(200);
+                        res.send({ token : token });
+                        return res;
+                    }
+                });
+                */
             break;
 
         case 'instagram':

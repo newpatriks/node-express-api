@@ -517,8 +517,8 @@ describe('Interaction Between Users', function() {
                     (res.body.data[1].facebook.email).should.be.eql('user_2@lockedin.com');
                     (res.body.data[1].facebook.first_name).should.be.eql('User 2');
 
-                    (res.body.data[2].facebook.email).should.be.eql('user_3@lockedin.com');
-                    (res.body.data[2].facebook.first_name).should.be.eql('User 3');
+                    (res.body.data[2].twitter.screen_name).should.be.eql('user_3');
+                    (res.body.data[2].twitter.location).should.be.eql('Barcelona');
 
                     done();
                 });
@@ -561,7 +561,6 @@ describe('Interaction Between Users', function() {
                     done();
                 });
         });
-
     });
 /*
 
