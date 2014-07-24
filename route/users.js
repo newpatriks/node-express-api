@@ -248,15 +248,25 @@ exports.update = function(req, res) {
 }
 
 exports.refresh_token = function(req, res) {
-    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
-        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-        db.userModel.update({ '_id' : user._id},  { 'access_token' : token } , function(err, result) {
+    if (tokenManager.getToken(req.headers)) {
+        db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
             if (err)
                 return res.send(401, { message : err });
+            if (!user) {
+                return res.send(400, { message : "This user doesn't exist" });
+            }
 
-            return res.send(200, { token : token });
+            var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+            db.userModel.update({ '_id' : user._id},  { 'access_token' : token } , function(err, result) {
+                if (err)
+                    return res.send(401, { message : err });
+
+                return res.send(200, { token : token });
+            });
         });
-    });
+    }else{
+        return res.send(401, { message : err });        
+    }
 }
 
 exports.preferences = function(req, res) {
