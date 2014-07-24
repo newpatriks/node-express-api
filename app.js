@@ -37,15 +37,9 @@ var routes      = {};
 routes.users    = require('./route/users.js');
 
 
-/*
-io.on('connection', function(socket){
-  socket.emit('connected', { status: 'Hi there' });
-  socket.on('spacebar', function (data) {
-    console.log(data);
-  });
-});
-server.listen(3000);
-*/
+// SOCKET.IO
+//server.listen(3000);
+
 
 
 // CALLS

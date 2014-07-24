@@ -1,6 +1,6 @@
 var redisClient             = require('./redis_db').redis;
-var TOKEN_EXPIRATION        = 1;
-var TOKEN_EXPIRATION_SEC    = TOKEN_EXPIRATION * 30;
+var TOKEN_EXPIRATION        = 60;
+var TOKEN_EXPIRATION_SEC    = TOKEN_EXPIRATION * 60;
 
 // Middleware for token verification
 exports.verifyToken = function (req, res, next) {

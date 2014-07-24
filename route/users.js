@@ -431,3 +431,18 @@ exports.shoutouts = function(req, res) {
         }
     });    
 };
+
+exports.setUpSocket = function() {
+    io.set('authorization', function (handshake, callback) {
+        handshake.foo = 'bar';
+        callback(null, true);
+    });
+
+    io.on('connection', function(socket){
+        console.log(socket.handshake.foo);
+        socket.emit('connected', { status: 'Hi there' });
+        socket.on('spacebar', function (data) {
+            console.log(data);
+        });
+    });
+}
