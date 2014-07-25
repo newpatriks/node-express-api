@@ -12,3 +12,7 @@ All the information about the calls related to many users. For example, to see a
 ## [Shout outs](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Shoutouts)
 
 All the calls related to the Shout out. To make a "shout out" and to know who "Shouted out" the user logged in.
+
+## [Sockets - socket.io](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Sockets
+
+How to work with sockets. It is useful when we use Shout outs in real-time and we want that the receiver of the message is notified.
