@@ -343,6 +343,7 @@ exports.logout = function(req, res) {
         if (err)
            return res.send(401, { message : err }); 
 
+        tokenManager.expireToken(req.headers);
         return res.send(200);
     });
 }
@@ -352,6 +353,7 @@ exports.remove = function(req, res) {
         if (err)
             return res.send(401, { message : err });
         
+        tokenManager.expireToken(req.headers);
         return res.send(200);
     });    
 }
