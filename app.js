@@ -7,8 +7,10 @@ var morgan            = require('morgan');
 var tokenManager      = require('./config/token_manager');
 var secret            = require('./config/secret');
 
-var server          = require('http').Server(app);
+
+var server          = require('http').createServer(express);
 var io              = require('socket.io')(server);
+
 
 var allowCrossDomain  = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
