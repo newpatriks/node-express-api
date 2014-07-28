@@ -9,12 +9,7 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
         console.log('Connection refused to ' + mongodbURL);
         console.log(err);
     } else {
-        /*
-        console.log('\n----------------------------------------------');
-        console.log('MongoDB is ready');
-        console.log("host : "+mongodbURL);
-        console.log('----------------------------------------------');
-        */
+        console.log('...Mongo is ready');
     }
 });
 
@@ -22,6 +17,7 @@ var Schema = mongoose.Schema;
 
 // User schema
 var User = new Schema({
+    socketioID      : String,
     access_token    : String,
     online          : { type: Boolean, default: true },
     advice_accepted : { type: Boolean, default: false },
@@ -34,7 +30,7 @@ var User = new Schema({
     preferences     : {
         image           : String,
         description     : String,
-        name            : String,        
+        name            : String,
         is_dj           : { type: Boolean,'default': false },
         latitude        : { type: String, 'default': ''},
         longitude       : { type: String, 'default': ''}
