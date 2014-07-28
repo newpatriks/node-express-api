@@ -10,7 +10,7 @@ exports.register = function(req, res) {
     console.log("------------------------------------------------");
     
     // GET THE INFORMATION
-    var sn = req.body.social || '';
+    var sn = req.body.social;
     switch(sn) {
         case 'facebook':
             console.log("FB Login");
@@ -111,9 +111,7 @@ exports.register = function(req, res) {
                                 //res.send(user);
                             }
                         });
-                        res.status(200);
-                        res.send({ token : token });
-                        return res;
+                        return res.send(200, { token : token });
                     }
                 });
             }else{
