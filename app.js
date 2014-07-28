@@ -1,13 +1,14 @@
 var express           = require('express');
-var app               = express();
+var app               = module.exports = express();
 var port              = process.env.PORT || 3000;
 var jwt               = require('express-jwt');
 var bodyParser        = require('body-parser');
 var morgan            = require('morgan');
 var tokenManager      = require('./config/token_manager');
 var secret            = require('./config/secret');
-var server            = require('http').Server(app);
-var io                = require('socket.io')(server);
+
+var server          = require('http').Server(app);
+var io              = require('socket.io')(server);
 
 var allowCrossDomain  = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -32,14 +33,14 @@ if ('development' == app.get('env')) {
 
 // STARTUP SERVER
 
-app.listen(port);
+//app.listen(port);
 var routes      = {};
 routes.users    = require('./route/users.js');
 
 
 // SOCKET.IO
-//server.listen(3000);
-
+server.listen(port);
+require('./config/socket-io')(app, server, secret);
 
 
 // CALLS

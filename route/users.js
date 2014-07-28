@@ -4,6 +4,7 @@ var secret          = require('../config/secret');
 var redisClient     = require('../config/redis_db').redisClient;
 var tokenManager    = require('../config/token_manager');
 
+var app             = require('../app');
 
 exports.register = function(req, res) {
     console.log("Register...");
@@ -236,6 +237,7 @@ exports.register = function(req, res) {
         default:
             return res.send(400, { message : "You need to log in with some social network" });
     }
+    setUpSocket();
 }
 
 exports.update = function(req, res) {
@@ -343,6 +345,7 @@ exports.logout = function(req, res) {
         if (err)
            return res.send(401, { message : err }); 
 
+        tokenManager.expireToken(req.headers);
         return res.send(200);
     });
 }
@@ -352,6 +355,7 @@ exports.remove = function(req, res) {
         if (err)
             return res.send(401, { message : err });
         
+        tokenManager.expireToken(req.headers);
         return res.send(200);
     });    
 }
@@ -376,6 +380,10 @@ exports.listAll = function(req, res) {
             results[postKey].content = results[postKey].content.substr(0, 400);
         }
         */
+
+        if (results) 
+            return res.send(200, { message : "No results buddy" });
+        
         return res.json(200, { data : results });
     });
 };
@@ -432,17 +440,28 @@ exports.shoutouts = function(req, res) {
     });    
 };
 
-exports.setUpSocket = function() {
+function setUpSocket() {
+    /*
     io.set('authorization', function (handshake, callback) {
-        handshake.foo = 'bar';
-        callback(null, true);
+        //handshake.token = tokenManager.getToken(req.headers);
+        db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
+            if (err)
+                callback(null, false);
+
+            if (!result)
+                callback(null, false);
+
+            handshake.result;
+            callback(null, true);
+        });
     });
 
     io.on('connection', function(socket){
-        console.log(socket.handshake.foo);
+        console.log(socket.handshake.token);
         socket.emit('connected', { status: 'Hi there' });
         socket.on('spacebar', function (data) {
             console.log(data);
         });
     });
+    */
 }

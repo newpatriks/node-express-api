@@ -11,10 +11,8 @@ redis.on('error', function (err) {
 });
 
 redis.on('connect', function () {
-    console.log('\n----------------------------------------------');
-    console.log('Redis is ready ');
+    console.log('...Redis is ready');
     //console.log("       host : "+host+" @ "+port);
-    console.log('----------------------------------------------');
 });
 
 exports.redis       = redis;
