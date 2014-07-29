@@ -40,7 +40,7 @@ routes.users    = require('./route/users.js');
 
 
 // SOCKET.IO
-server.listen(3000);
+server.listen();
 require('./config/socket-io')(app, server, secret);
 
 
