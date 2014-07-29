@@ -41,6 +41,9 @@ routes.users    = require('./route/users.js');
 
 // SOCKET.IO
 server.listen();
+console.log("---------------------------------------");
+console.log(server);
+console.log("---------------------------------------");
 require('./config/socket-io')(app, server, secret);
 
 
