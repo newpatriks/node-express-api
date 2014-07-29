@@ -379,10 +379,8 @@ exports.listAll = function(req, res) {
         }
         */
 
-        if (results) 
-            return res.send(200, { message : "No results buddy" });
-        
-        return res.json(200, { data : results });
+        if (results)         
+            return res.json(200, { data : results });
     });
 };
 
