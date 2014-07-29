@@ -50,7 +50,7 @@ exports.register = function(req, res) {
                     if (user) {
                         console.log(".........This user already exist");
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'facebook.email' : info.email }, {'access_token' : token}, function(err, result) {
+                        db.userModel.update({ 'facebook.email' : info.email }, {'access_token' : token, 'online' : true}, function(err, result) {
                             if (err) {
                                 console.log('Error updating: ' + err);
                                 //res.send({'error':'An error has occurred'});
@@ -103,7 +103,7 @@ exports.register = function(req, res) {
                     if (user) {
                         console.log(".........This user already exist");
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'twitter.screen_name' : info.screen_name }, {'access_token' : token}, function(err, result) {
+                        db.userModel.update({ 'twitter.screen_name' : info.screen_name }, {'access_token' : token, 'online' : true}, function(err, result) {
                             if (err) {
                                 console.log('Error updating: ' + err);
                                 //res.send({'error':'An error has occurred'});
