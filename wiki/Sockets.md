@@ -49,6 +49,11 @@ At the front end we need to read the socket.io library from any available CDN. A
 		console.log("newShoutOut received!");
 	});
 </script>
+
+<script>
+	var idTo = XX; // ID of the user that we're sending a private shout out
+	socket.emit('newShoutOut', { data : "Hey There!", idTo : idTo });
+</script>
 ```
 
 The idea is to save the ID of the socket to the user information that will send to the API to register/login the user
