@@ -40,10 +40,12 @@ routes.users    = require('./route/users.js');
 
 
 // SOCKET.IO
-server.listen();
+server.listen(80);
+/*
 console.log("---------------------------------------");
 console.log(server);
 console.log("---------------------------------------");
+*/
 require('./config/socket-io')(app, server, secret);
 
 

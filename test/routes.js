@@ -562,14 +562,424 @@ describe('Interaction Between Users', function() {
                 });
         });
     });
-/*
+});
 
-    it('Should return 200 http code after Shouted out one of them', function() {
-        
-    });
+describe('Testing Login /w TWITTER', function() {
+    var token = '';
 
-    it('Should return a number of Shouted outs equal or more than 1', function() {
+    describe('Register / Login user using TWITTER', function() {
+        var profile = {
+            social : 'twitter',
+            "facebook" : {},
+            "twitter": {
+                "thumbnail": "http://pbs.twimg.com/profile_images/472342968087891968/36Nn8n0__normal.jpeg",
+                "last_name": "Smith",
+                "first_name": "Ellie",
+                "notifications": false,
+                "follow_request_sent": false,
+                "following": false,
+                "default_profile_image": false,
+                "default_profile": false,
+                "profile_use_background_image": true,
+                "profile_text_color": "333333",
+                "profile_sidebar_fill_color": "F6F6F6",
+                "profile_sidebar_border_color": "FFFFFF",
+                "profile_link_color": "2D2E2C",
+                "profile_banner_url": "https://pbs.twimg.com/profile_banners/112172098/1380204762",
+                "profile_image_url_https": "https://pbs.twimg.com/profile_images/472342968087891968/36Nn8n0__normal.jpeg",
+                "profile_image_url": "http://pbs.twimg.com/profile_images/472342968087891968/36Nn8n0__normal.jpeg",
+                "profile_background_tile": true,
+                "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/378800000082813912/bb74483ee0dc978018ccaed7df19ed39.jpeg",
+                "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/378800000082813912/bb74483ee0dc978018ccaed7df19ed39.jpeg",
+                "profile_background_color": "B8CBD6",
+                "is_translation_enabled": false,
+                "is_translator": false,
+                "contributors_enabled": false,
+                "status": {
+                    "lang": "en",
+                    "possibly_sensitive": false,
+                    "retweeted": false,
+                    "favorited": false,
+                    "entities": {
+                        "user_mentions": [
+                            {
+                                "indices": [
+                                    13,
+                                    25
+                                ],
+                                "id_str": "262189907",
+                                "id": 262189907,
+                                "name": "Suzie Howell Photo",
+                                "screen_name": "suziehowell"
+                            },
+                            {
+                                "indices": [
+                                    29,
+                                    41
+                                ],
+                                "id_str": "17896874",
+                                "id": 17896874,
+                                "name": "It's Nice That",
+                                "screen_name": "itsnicethat"
+                            }
+                        ],
+                        "urls": [
+                            {
+                                "indices": [
+                                    42,
+                                    64
+                                ],
+                                "display_url": "itsnicethat.com/articles/thing…",
+                                "expanded_url": "http://www.itsnicethat.com/articles/things-62-2",
+                                "url": "http://t.co/7ynlBVhHiH"
+                            }
+                        ],
+                        "symbols": [],
+                        "hashtags": []
+                    },
+                    "favorite_count": 0,
+                    "retweet_count": 0,
+                    "contributors": null,
+                    "place": null,
+                    "coordinates": null,
+                    "geo": null,
+                    "in_reply_to_screen_name": null,
+                    "in_reply_to_user_id_str": null,
+                    "in_reply_to_user_id": null,
+                    "in_reply_to_status_id_str": null,
+                    "in_reply_to_status_id": null,
+                    "truncated": false,
+                    "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+                    "text": "Oh hey there @suziehowell on @itsnicethat http://t.co/7ynlBVhHiH",
+                    "id_str": "492629773475401728",
+                    "id": 492629773475401700,
+                    "created_at": "Fri Jul 25 11:17:45 +0000 2014"
+                },
+                "lang": "en",
+                "statuses_count": 860,
+                "verified": false,
+                "geo_enabled": false,
+                "time_zone": "Amsterdam",
+                "utc_offset": 7200,
+                "favourites_count": 64,
+                "created_at": "Sun Feb 07 13:56:00 +0000 2010",
+                "listed_count": 8,
+                "friends_count": 853,
+                "followers_count": 363,
+                "protected": false,
+                "entities": {
+                    "description": {
+                        "urls": []
+                    },
+                    "url": {
+                        "urls": [
+                            {
+                                "indices": [
+                                    0,
+                                    22
+                                ],
+                                "display_url": "elliesmithphotography.co.uk",
+                                "expanded_url": "http://www.elliesmithphotography.co.uk",
+                                "url": "http://t.co/pBeWhKx6vd"
+                            }
+                        ]
+                    }
+                },
+                "url": "http://t.co/pBeWhKx6vd",
+                "description": "Photographer. Raised in Birmingham, living in London. info@elliesmithphotography.co.uk",
+                "location": "",
+                "screen_name": "elliesmithphoto",
+                "name": "Ellie Smith",
+                "id_str": "112172098",
+                "id": 112172098
+            },
+            instagram : {}
+        };
         
+        it('Should return http response 200', function(done) {
+            request(url)
+                .post('/user')
+                .send(profile)
+                .end(function (req,res) {
+                    (res.status).should.be.exactly(200);
+                    res.text.should.be.json;
+                    token = JSON.parse(res.text)['token'];
+                    (token).should.be.a.String;
+                    (token).should.not.be.empty;
+                    done();
+                });
+        });
     });
-*/
+    describe('Logout', function() {
+        it('Should return http response 200', function(done) {
+            request(url)
+                .post('/user/logout')
+                .set('Authorization', 'Bearer ' + token)
+                .end(function(err, res) {
+                    (res.status).should.be.exactly(200);
+                    done();
+                });
+            
+        });
+
+    });
+    describe('Register / Login user using FACEBOOK', function() {
+        var profile = {
+            social : 'facebook',
+            "facebook": {
+                "music": {
+                    "paging": {
+                        "next": "https://graph.facebook.com/v2.0/10152282493886909/music?access_token=CAADeXTBsjpgBAOScDfxnIbUuszeQA7UqYgapeVvoddQeeQ49ZBy7jblZAd2cZCEW02SCXqseJO5AZCD0Ld3cnSrFB1BkX7Nrtszx2fvZCtcJrVIZCOXx7PcCFhqHZCdhGWuBsR5HXRBQY5w0MJbBxU0KBBImDOxLQjh4i5xaf6dVZB7SZC4pEeCgWy2mJe7OlSID5rGzX1IFMUhBTdzjPeZBWD&limit=25&offset=25&__after_id=enc_AeyHhxb4F_3IM5NRUKPtD041YGMv9PzCygMs2RtpjdPGsJYyALo-xMMGD0Bg31ZEPtI"
+                    },
+                    "data": [
+                        {
+                            "id": "36646107889",
+                            "created_time": "2014-02-08T16:34:34+0000",
+                            "name": "Sum 41",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "19855571496",
+                            "created_time": "2014-02-08T16:32:45+0000",
+                            "name": "LMFAO",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "9748517548",
+                            "created_time": "2014-02-08T16:32:04+0000",
+                            "name": "Franz Ferdinand",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "6267905926",
+                            "created_time": "2014-02-08T16:31:56+0000",
+                            "name": "Lil' Mama",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "5204238009",
+                            "created_time": "2014-02-08T16:31:35+0000",
+                            "name": "Norah Jones",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "6404768717",
+                            "created_time": "2014-02-08T16:31:28+0000",
+                            "name": "Keane",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "9770929278",
+                            "created_time": "2014-02-08T16:31:20+0000",
+                            "name": "Adele",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "5618127822",
+                            "created_time": "2014-02-08T16:31:12+0000",
+                            "name": "Thirty Seconds to Mars",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "5544067490",
+                            "created_time": "2014-02-08T16:30:52+0000",
+                            "name": "Deftones",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "18279403944",
+                            "created_time": "2014-02-08T16:30:40+0000",
+                            "name": "Beastie Boys",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "5718732097",
+                            "created_time": "2014-02-08T16:30:27+0000",
+                            "name": "Justin Timberlake",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "111074255594682",
+                            "created_time": "2014-02-08T16:29:56+0000",
+                            "name": "RUSSIAN RED (OFICIAL)",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "6885814958",
+                            "created_time": "2014-02-08T16:29:53+0000",
+                            "name": "Lil Wayne",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "8651510029",
+                            "created_time": "2014-02-08T16:29:49+0000",
+                            "name": "Johnny Cash",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "7401700249",
+                            "created_time": "2014-02-08T16:29:43+0000",
+                            "name": "Bruce Springsteen",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "329386304007",
+                            "created_time": "2014-02-08T16:29:34+0000",
+                            "name": "Marco Carola",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "10787376253",
+                            "created_time": "2014-02-08T16:29:26+0000",
+                            "name": "La Mala Rodriguez",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "22330837712",
+                            "created_time": "2014-02-08T16:29:10+0000",
+                            "name": "Rammstein",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "5769333796",
+                            "created_time": "2014-02-08T16:28:59+0000",
+                            "name": "50 Cent",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "25209381460",
+                            "created_time": "2014-02-08T16:28:57+0000",
+                            "name": "Wally Lopez",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "7284978791",
+                            "created_time": "2014-02-08T16:28:50+0000",
+                            "name": "ELVIS PRESLEY",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "6558867050",
+                            "created_time": "2014-02-08T16:28:46+0000",
+                            "name": "Alicia Keys",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "11455644806",
+                            "created_time": "2014-02-08T16:28:38+0000",
+                            "name": "Snoop Dogg",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "16929140023",
+                            "created_time": "2014-02-08T16:28:36+0000",
+                            "name": "AKON",
+                            "category": "Musician/band"
+                        },
+                        {
+                            "id": "25098475544",
+                            "created_time": "2014-02-08T16:28:26+0000",
+                            "name": "Foo Fighters",
+                            "category": "Musician/band"
+                        }
+                    ]
+                },
+                "thumbnail": "http://graph.facebook.com/10152282493886909/picture",
+                "picture": "http://graph.facebook.com/10152282493886909/picture?type=large",
+                "verified": true,
+                "updated_time": "2014-05-22T12:47:45+0000",
+                "timezone": 1,
+                "name": "Jordi Llobet Torrens",
+                "locale": "es_ES",
+                "link": "https://www.facebook.com/app_scoped_user_id/10152282493886909/",
+                "last_name": "Llobet Torrens",
+                "inspirational_people": [
+                    {
+                        "name": "Pep Guardiola",
+                        "id": "110088699020288"
+                    },
+                    {
+                        "name": "EDUARD PUNSET",
+                        "id": "34418786533"
+                    },
+                    {
+                        "name": "Steve Jobs",
+                        "id": "113529011990795"
+                    },
+                    {
+                        "name": "Barney Stinson",
+                        "id": "68816265924"
+                    },
+                    {
+                        "name": "Tony Montana (SCARFACE)",
+                        "id": "34883224097"
+                    },
+                    {
+                        "name": "Martin Scorsese",
+                        "id": "469644786438842"
+                    }
+                ],
+                "gender": "male",
+                "first_name": "Jordi",
+                "favorite_teams": [
+                    {
+                        "name": "Barça",
+                        "id": "114991068515354"
+                    },
+                    {
+                        "name": "Bàsquet Manresa",
+                        "id": "112907918723902"
+                    },
+                    {
+                        "name": "FC Bayern München",
+                        "id": "141973839152649"
+                    },
+                    {
+                        "name": "Arsenal",
+                        "id": "20669912712"
+                    }
+                ],
+                "favorite_athletes": [
+                    {
+                        "name": "Carles Puyol",
+                        "id": "127670413978306"
+                    },
+                    {
+                        "name": "Xavi",
+                        "id": "109648175728358"
+                    },
+                    {
+                        "name": "Leo Messi",
+                        "id": "176063032413299"
+                    },
+                    {
+                        "name": "Pau Gasol",
+                        "id": "49824215862"
+                    },
+                    {
+                        "name": "Ronaldinho",
+                        "id": "112658518746675"
+                    },
+                    {
+                        "name": "SALVA ARCO FRIAS",
+                        "id": "177639969104402"
+                    }
+                ],
+                "email": "newpatriks@hotmail.com",
+                "id": "10152282493886909"
+            },
+            instagram : {}
+        };
+    
+        it('Should return http response 200', function(done) {
+            request(url)
+                .post('/user')
+                .send(profile)
+                .end(function (req,res) {
+                    token = JSON.parse(res.text)['token'];
+                    (res.status).should.be.exactly(200);
+                    done();
+                });
+        });
+    });
 });
