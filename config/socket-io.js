@@ -2,6 +2,10 @@ module.exports = function(app, server, secret) {
     var clients = {};
     console.log("initiating sockets...");
     var sio = require('socket.io').listen(server);
+    sio.configure(function () { 
+        sio.set("transports", ["xhr-polling"]); 
+        sio.set("polling duration", 10); 
+    });
 
     sio.sockets.on('connection', function (socket) {
         clients[socket.id] = socket;
