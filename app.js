@@ -40,7 +40,7 @@ routes.users    = require('./route/users.js');
 
 
 // SOCKET.IO
-server.listen(80);
+server.listen(3000);
 /*
 console.log("---------------------------------------");
 console.log(server);
