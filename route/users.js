@@ -435,7 +435,7 @@ exports.shoutouts = function(req, res) {
         }
     });    
 };
-x
+
 function setUpSocket() {
     
 }
