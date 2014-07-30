@@ -11,7 +11,7 @@ module.exports = function(app, server, secret) {
         socket.on('newShoutOut', function(data) {
             var receptor    = data.idTo;
             var emiter      = socket.client.id;
-            //console.log("...new shout out from " +emiter+ " to "+receptor);
+            console.log("...new shout out from " +emiter+ " to "+receptor);
             var elem = findElement(io.sockets['sockets'], 'id', receptor);
             io.sockets.sockets[elem].emit('privateShoutout',{ data : data.data, from : emiter });
         });
