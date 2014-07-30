@@ -435,29 +435,3 @@ exports.shoutouts = function(req, res) {
         }
     });    
 };
-
-function setUpSocket() {
-    /*
-    io.set('authorization', function (handshake, callback) {
-        //handshake.token = tokenManager.getToken(req.headers);
-        db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
-            if (err)
-                callback(null, false);
-
-            if (!result)
-                callback(null, false);
-
-            handshake.result;
-            callback(null, true);
-        });
-    });
-
-    io.on('connection', function(socket){
-        console.log(socket.handshake.token);
-        socket.emit('connected', { status: 'Hi there' });
-        socket.on('spacebar', function (data) {
-            console.log(data);
-        });
-    });
-    */
-}

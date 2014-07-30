@@ -17,7 +17,6 @@ var Schema = mongoose.Schema;
 
 // User schema
 var User = new Schema({
-    socketioID      : String,
     access_token    : String,
     online          : { type: Boolean, default: true },
     advice_accepted : { type: Boolean, default: false },
@@ -33,7 +32,8 @@ var User = new Schema({
         name            : String,
         is_dj           : { type: Boolean,'default': false },
         latitude        : { type: String, 'default': ''},
-        longitude       : { type: String, 'default': ''}
+        longitude       : { type: String, 'default': ''},
+        socketioID      : { type: String, default: "" }
     },
     creationDate    : { type: Date, 'default':Date.now }
 });

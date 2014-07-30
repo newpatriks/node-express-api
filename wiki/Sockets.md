@@ -69,8 +69,3 @@ data = {
         "first_name": "Name",
         ...
 ```
-
-
-##Shout out action
-
-When a user is doing a shout out, from the front end 
