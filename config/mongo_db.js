@@ -33,7 +33,7 @@ var User = new Schema({
         is_dj           : { type: Boolean,'default': false },
         latitude        : { type: String, 'default': ''},
         longitude       : { type: String, 'default': ''},
-        socketioID      : { type: String, default: "" }
+        socketioID      : { type: String, 'default': '' }
     },
     creationDate    : { type: Date, 'default':Date.now }
 });
