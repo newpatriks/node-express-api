@@ -9,6 +9,7 @@ module.exports = function(app, server, secret) {
         socket.emit('identification', { data : socket.client.id });
 
         socket.on('newShoutOut', function(data) {
+            console.log("newShoutOut");
             var receptor    = data.idTo;
             var emiter      = socket.client.id;
             console.log("...new shout out from " +emiter+ " to "+receptor);
