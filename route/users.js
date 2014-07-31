@@ -235,7 +235,6 @@ exports.register = function(req, res) {
         default:
             return res.send(400, { message : "You need to log in with some social network" });
     }
-    setUpSocket();
 }
 
 exports.update = function(req, res) {
@@ -435,7 +434,3 @@ exports.shoutouts = function(req, res) {
         }
     });    
 };
-
-function setUpSocket() {
-    
-}

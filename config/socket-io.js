@@ -1,3 +1,5 @@
+var db              = require('../config/mongo_db');
+
 module.exports = function(app, server, secret) {
     var clients = {};
     console.log("initiating sockets...");
@@ -7,6 +9,9 @@ module.exports = function(app, server, secret) {
         clients[socket.id] = socket;
         console.log("...new connection: "+socket.client.id);
         socket.emit('identification', { data : socket.client.id });
+        
+        //socket.broadcast.emit('update', { data : clients });
+
 
         socket.on('newShoutOut', function(data) {
             console.log("newShoutOut");
@@ -16,8 +21,10 @@ module.exports = function(app, server, secret) {
             var elem = findElement(io.sockets['sockets'], 'id', receptor);
             io.sockets.sockets[elem].emit('privateShoutout',{ data : data.data, from : emiter });
         });
-        
+
         socket.on('disconnect', function() {
+            //clients.splice(clients.indexOf(socket.client.id), 1);
+            socket.broadcast.emit('deleted', { id : socket.client.id });
             //console.log("..."+socket.client.id + " disconnected");
         });
     });
