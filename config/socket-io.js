@@ -1,5 +1,3 @@
-var db              = require('../config/mongo_db');
-
 module.exports = function(app, server, secret) {
     var clients = {};
     console.log("initiating sockets...");
@@ -10,14 +8,13 @@ module.exports = function(app, server, secret) {
         console.log("...new connection: "+socket.client.id);
         socket.emit('identification', { data : socket.client.id });
         
-        //socket.broadcast.emit('update', { data : clients });
-
+        socket.broadcast.emit('update', { data : socket.client.id });
 
         socket.on('newShoutOut', function(data) {
             console.log("newShoutOut");
-            var receptor    = data.idTo;
-            var emiter      = socket.client.id;
-            console.log("...new shout out from " +emiter+ " to "+receptor);
+            var receptor = data.idTo;
+            var emiter = socket.client.id;
+            //console.log("...new shout out from " +emiter+ " to "+receptor);
             var elem = findElement(io.sockets['sockets'], 'id', receptor);
             io.sockets.sockets[elem].emit('privateShoutout',{ data : data.data, from : emiter });
         });
