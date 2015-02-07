@@ -1,18 +1,13 @@
-# Welcome
-
-
-## [User](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/User)
+##/user
+=============
 
 All the calls and the information related about the /user stuff. Calls to register, to login, get the information about the user, logout and delete. Know the parameters that be need to pass in each call and see an examples with $.ajax jquery call.
 
-#POST user/
+###POST
 
 Will create a user and will be saved at mongodb. This call will return a valid token as well. The token will be valid for the next 60 minutes, and will be saved in a Redis db. Each next call will need this token be sent throught the Headers parameters.
 
-**Resource URL**
-/user
-
-##Parameters
+#####Parameters
 The parameters can come from facebook or twitter or instagram or google+. The schema should be like:
 
 ```javascript
@@ -53,11 +48,11 @@ var profile = {
 ```
 
 
-##Headers
+#####Headers
 
 *No need headers*
 
-##Example
+#####Example
 
 ```javascript
 $.ajax({
@@ -69,22 +64,18 @@ $.ajax({
 });
 ```
 
-#GET user/
+###GET
 
 Will return the information of the user logged in. Does not need any get parameter, only the token at the header. 
 
-**Resource URL**
-/user
-
-##Parameters
+#####Parameters
 *No parameters*
 
-
-##Headers
+#####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+#####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -98,22 +89,19 @@ $.ajax({
 });
 ```
 
-#DELETE user/
+###DELETE
 
 Will remove the user that are logged in. 
 
-**Resource URL**
-/user
-
-##Parameters
+#####Parameters
 *No parameters*
 
 
-##Headers
+#####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+#####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -126,14 +114,11 @@ $.ajax({
 });
 ```
 
-#PUT user/
+###PUT
 
 This call is to update the information about the user. Let us to change the picture and the description showed on the app.
 
-**Resource URL**
-/user
-
-##Parameters
+#####Parameters
 
 The parameters has to be an entire object of the user information. The object has to have the 'preferences' field:
 
@@ -178,11 +163,11 @@ var profile = {
 };
 ```
 
-##Headers
+#####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+#####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -196,21 +181,21 @@ $.ajax({
 });
 ```
 
-#GET user/preferences
+##/user/preferences
+=============
+
+###GET
 
 Will return the information in USER > PREFERENCES only.
 
-**Resource URL**
-/user/preferences
-
-##Parameters
+####Parameters
 *No parameters*
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -225,14 +210,14 @@ $.ajax({
 ```
 
 
-#POST user/merge
+##/user/merge
+===========
+
+###POST
 
 This call will merge the information about the user is logged in, with the information that we are sending. The point is to be possible to merge different social networks accounts to the same user.
 
-**Resource URL**
-/user/merge
-
-##Parameters
+####Parameters
 ```javascript
 var profile = {
   social : 'twitter',
@@ -248,11 +233,11 @@ var profile = {
 };
 ```
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -265,22 +250,22 @@ $.ajax({
    console.log(msg);
 });
 ```
-#POST user/logout
+##user/logout
+=========
+
+###POST 
 
 This call will logout the session of the user logged in.
 
-**Resource URL**
-/user/logout
-
-##Parameters
+####Parameters
 *No parameters*
 
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -293,36 +278,34 @@ $.ajax({
 });
 ```
 
-#PUT /user/online/
+##/user/online/
+==========
+###PUT 
 
 Call to modify the user status on the application. When the users close the app the system will call to this call to "disconnect" the user but not logout.
 
-**Resource URL**
-/user/online
-
-##Parameters
+####Parameters
 
 The parameters has to be an entire object of the user information. The object has to have the 'preferences' field:
 
 ```javascript
 var data = { connected : false }
 ```
+##user/reftoken
+========
 
-#POST user/reftoken
+###POST 
 
 This is to regenerate a new token for the users that are logged in and the token has expired. The idea is that when another call returns a 401 HTTP code, will call this function and will check if the user is online or not.
 
-**Resource URL**
-/user/reftoken
-
-##Parameters
+####Parameters
 *No parameters*
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 var token = "";
 actionRequested();
@@ -356,25 +339,21 @@ function actionRequested() {
 }
 ```
 
-## [Users](https://bitbucket.org/kentlyons/lockedin-api/wiki/wiki/Users)
+##/users/all/:numpage
+========
 
-All the information about the calls related to many users. For example, to see all the users connected at this moment.
-
-#GET users/all/:numpage
+###GET
 
 This call will return a list of all the users that are lockedIn at this moment with all their information. With the parameter of **numpage** will specify the page number that we want to show. The pages will show 15 elements, variable predefined at the server.
 
-**Resource URL**
-/users/all/:numpage
-
-##Parameters
+####Parameters
 *No parameters*
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
@@ -387,21 +366,21 @@ $.ajax({
 });
 ```
 
-#GET users/number
+##users/number
+========
+
+###GET 
 
 The call will return only an integer, that will be the number of users connected to the app at this moment.
 
-**Resource URL**
-/users/number
-
-##Parameters
+####Parameters
 *No parameters*
 
-##Headers
+####Headers
 
 **Authorization** type **Bearer**
 
-##Example
+####Example
 ```javascript
 $.ajax({
   beforeSend: function (xhr) {
