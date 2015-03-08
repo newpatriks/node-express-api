@@ -1,6 +1,6 @@
 {
-  "name": "node-api-rest",
-  "description": "API REST for LockedIn",
+  "name": "instagraph-api",
+  "description": "Instagraph API",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -9,16 +9,14 @@
     "morgan": "~1.0.0",
     "body-parser": "^1.4.3",
     "bcrypt": "^0.7.8",
-    "redis": "^0.10.3",
+    "redis": "~0.10.3",
     "express-jwt": "^0.2.1",
     "jsonwebtoken": "^0.4.0",
     "url": "^0.10.1",
     "should": "^4.0.4",
     "mocha": "^1.20.1",
     "supertest": "^0.13.0",
-    "socket.io": "^1.0.6",
-    "http": "0.0.0",
-    "socketio-jwt": "^2.3.4"
+    "http": "0.0.0"
   },
   "scripts": {
     "start": "app.js",

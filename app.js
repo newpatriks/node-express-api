@@ -8,8 +8,6 @@ var tokenManager      = require('./config/token_manager');
 var secret            = require('./config/secret');
 
 var server            = require('http').createServer(app);
-//var io                = require('socket.io').listen(server);
-
 
 var allowCrossDomain  = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -33,20 +31,10 @@ if ('development' == app.get('env')) {
 }
 
 // STARTUP SERVER
-
-//app.listen(port);
+app.listen(port);
 var routes      = {};
 routes.users    = require('./route/users.js');
-
-
-// SOCKET.IO
-server.listen(port);
-/*
-console.log("---------------------------------------");
-console.log(server);
-console.log("---------------------------------------");
-*/
-require('./config/socket-io')(app, server, secret);
+console.log("http://localhost:"+port);
 
 
 // CALLS
@@ -64,6 +52,3 @@ app.post('/user/logout', jwt({secret: secret.secretToken}), tokenManager.verifyT
 
 app.get('/users/all/:numpage', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.listAll);  // Return the users connected separated by pages
 app.get('/users/number', routes.users.listAllNumber);                                                               // Return the number of users connected
-
-app.post('/shoutout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.send_shoutout);  
-app.get('/shoutout', jwt({secret: secret.secretToken}), tokenManager.verifyToken, routes.users.shoutouts);  

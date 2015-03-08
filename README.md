@@ -1,5 +1,5 @@
 ##/user
-===
+---
 
 All the calls and the information related about the /user stuff. Calls to register, to login, get the information about the user, logout and delete. Know the parameters that be need to pass in each call and see an examples with $.ajax jquery call.
 
@@ -182,7 +182,7 @@ $.ajax({
 ```
 
 ##/user/preferences
-===
+---
 
 ###GET
 
@@ -211,7 +211,7 @@ $.ajax({
 
 
 ##/user/merge
-===
+---
 
 ###POST
 
@@ -251,7 +251,7 @@ $.ajax({
 });
 ```
 ##user/logout
-===
+---
 
 ###POST 
 
@@ -279,7 +279,7 @@ $.ajax({
 ```
 
 ##/user/online/
-===
+---
 ###PUT 
 
 Call to modify the user status on the application. When the users close the app the system will call to this call to "disconnect" the user but not logout.
@@ -292,7 +292,7 @@ The parameters has to be an entire object of the user information. The object ha
 var data = { connected : false }
 ```
 ##user/reftoken
-===
+---
 
 ###POST 
 
@@ -340,7 +340,7 @@ function actionRequested() {
 ```
 
 ##/users/all/:numpage
-===
+---
 
 ###GET
 
@@ -367,7 +367,7 @@ $.ajax({
 ```
 
 ##users/number
-===
+---
 
 ###GET 
 

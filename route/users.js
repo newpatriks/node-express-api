@@ -11,70 +11,16 @@ exports.register = function(req, res) {
     // GET THE INFORMATION
     var sn = req.body.social;
     switch(sn) {
-        case 'facebook':
-            console.log("   · Using FB LOGIN");
+        case 'instagram':
+            console.log("   · Using INSTAGRAM LOGIN");
             var info    = req.body[sn];
             // 1. CHECK DE [EMAIL] AND [SOCIAL]
             if (info) {
-                db.userModel.findOne({ 'facebook.email' : info.email}, function(err, user) {
+                db.userModel.findOne({ 'instagram.screen_name' : info.screen_name}, function(err, user) {
                     if (err)
                         return res.send(401, {message : err});
                     if (!user) {
-                    // 2.1. IF !EXIST (IT'S NEW)
-                        // 2.1.1. REGISTER
-                        var user = new db.userModel();
-                        var seen = [];
-                        JSON.stringify(info, function(key, val) {
-                            if (val != null && typeof val == "object") {
-                                if (seen.indexOf(val) >= 0)
-                                    return
-                                seen.push(val)
-                            }
-                            return val;
-                        });
-                        user[sn] = seen[0];
-
-                        user.preferences.image          = user[sn].picture;
-                        user.preferences.description    = '';
-                        user.preferences.name           = user[sn].name;
-
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        user.access_token = token;
-                        user.save();
-                        // 2.1.2. CREATE & RETURN TOKEN
-                        
-                        return res.send(200, { token : token });
-                    }
-                    if (user) {
-                        console.log(".........This user already exist");
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'facebook.email' : info.email }, {'access_token' : token, 'online' : true}, function(err, result) {
-                            if (err) {
-                                console.log('Error updating: ' + err);
-                                //res.send({'error':'An error has occurred'});
-                            } else {
-                                console.log('' + result + ' document(s) updated');
-                                //res.send(user);
-                            }
-                        });
-                        return res.send(200, { token : token });
-                    }
-                });
-            }else{
-                return res.send(400, { message : "The information needs to be in a proper scheme" });
-            }
-            break;
-
-        case 'twitter':
-            console.log("   · Using TW LOGIN");
-            var info    = req.body[sn];
-            // 1. CHECK DE [EMAIL] AND [SOCIAL]
-            if (info) {
-                db.userModel.findOne({ 'twitter.screen_name' : info.screen_name}, function(err, user) {
-                    if (err)
-                        return res.send(401, {message : err});
-                    if (!user) {
-                    // 2.1. IF !EXIST (IT'S NEW)
+                        // 2.1. IF !EXIST (IT'S NEW)
                         // 2.1.1. REGISTER
                         var user = new db.userModel();
                         var seen = [];
@@ -91,7 +37,7 @@ exports.register = function(req, res) {
                         user.preferences.image          = user[sn].profile_image_url;
                         user.preferences.description    = user[sn].description;
                         user.preferences.name           = user[sn].name;
-                        
+
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
                         user.access_token = token;
                         user.save();
@@ -101,7 +47,7 @@ exports.register = function(req, res) {
                     if (user) {
                         console.log(".........This user already exist");
                         var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'twitter.screen_name' : info.screen_name }, {'access_token' : token, 'online' : true}, function(err, result) {
+                        db.userModel.update({ 'instagram.screen_name' : info.screen_name }, {'access_token' : token, 'online' : true}, function(err, result) {
                             if (err) {
                                 console.log('Error updating: ' + err);
                                 //res.send({'error':'An error has occurred'});
@@ -116,66 +62,6 @@ exports.register = function(req, res) {
             }else{
                 return res.send(400, { message : "The information needs to be in a proper scheme" });
             }
-            break;
-
-        case 'g+':
-            /*
-            console.log("G+ Login");
-            var info    = req.body[sn];
-            // 1. CHECK DE [EMAIL] AND [SOCIAL]
-            if (info) {
-                db.userModel.findOne({ 'google.screen_name' : info.screen_name}, function(err, user) {
-                    if (err)
-                        return res.send(401, {message : err});
-                    if (!user) {
-                    // 2.1. IF !EXIST (IT'S NEW)
-                        // 2.1.1. REGISTER
-                        var user = new db.userModel();
-                        var seen = [];
-                        JSON.stringify(info, function(key, val) {
-                            if (val != null && typeof val == "object") {
-                                if (seen.indexOf(val) >= 0)
-                                    return
-                                seen.push(val)
-                            }
-                            return val;
-                        });
-                        user[sn] = seen[0];
-
-                        user.preferences.image = user[sn].profile_image_url;
-                        user.preferences.description = user[sn].description;
-                        
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        user.access_token = token;
-                        user.save();
-                        // 2.1.2. CREATE & RETURN TOKEN
-                        return res.send(200, { token : token });
-                    }
-                    if (user) {
-                        console.log(".........This user already exist");
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'google.screen_name' : info.screen_name }, {'access_token' : token}, function(err, result) {
-                            if (err) {
-                                console.log('Error updating: ' + err);
-                                //res.send({'error':'An error has occurred'});
-                            } else {
-                                console.log('' + result + ' document(s) updated');
-                                //res.send(user);
-                            }
-                        });
-                        res.status(200);
-                        res.send({ token : token });
-                        return res;
-                    }
-                });
-                */
-            break;
-
-        case 'instagram':
-            break;
-
-        case 'bbc':
-            console.log("   · Using BBC iD LOGIN");
             break;
 
         default:
@@ -338,45 +224,4 @@ exports.listAllNumber = function(req, res) {
         }
         return res.json(200, { data : results });
     });
-};
-
-exports.send_shoutout = function(req, res) {
-    // Save at receiver of the shout out
-    var id_r = req.body.id;
-    var id_s;
-
-    // Save at the emiter of the shout out.
-    db.userModel.update({ 'access_token' : tokenManager.getToken(req.headers)}, { $addToSet: { 'shoutouts_s': id_r }}, function(err, result) {
-        if (err) {
-            console.log(err);
-            return res.send(400, { message : "Some error occurred updating the shout outs." });  
-        }
-
-        db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, result) {
-            id_s = result._id;
-            
-            db.userModel.update({ _id : id_r }, { $addToSet: { 'shoutouts_r': id_s }}, function(err, result) {
-                if (err) {
-                    console.log(err);
-                    return res.send(400, { message : "Some error occurred updating the shout outs." });
-                }
-                return res.json(200);
-            });    
-        });
-    });
-};
-
-exports.shoutouts = function(req, res) {
-    db.userModel.findOne({ 'access_token' : tokenManager.getToken(req.headers) }, function(err, user) {
-        if (err) {
-            console.log();
-            return res.send(401, { message : err });
-        }
-        if (!user) {
-            return res.send(400, { message : "You've to be logged in" });
-        }
-        if (user) {
-            return res.send(200, { data : user });
-        }
-    });    
 };

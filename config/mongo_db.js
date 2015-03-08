@@ -1,7 +1,7 @@
 var mongoose            = require('mongoose');
 var bcrypt              = require('bcrypt');
 var SALT_WORK_FACTOR    = 10;
-var mongodbURL          = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/lockedin';
+var mongodbURL          = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/instagraph';
 var mongodbOptions      = { };
 
 mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
@@ -20,11 +20,6 @@ var User = new Schema({
     access_token    : String,
     online          : { type: Boolean, default: true },
     advice_accepted : { type: Boolean, default: false },
-    shoutouts_r     : { type: [String], 'default': [] },
-    shoutouts_s     : { type: [String], 'default': [] },
-    facebook        : Object,
-    twitter         : Object,
-    google          : Object,
     instagram       : Object,
     preferences     : {
         image           : String,
@@ -33,8 +28,7 @@ var User = new Schema({
         is_dj           : { type: Boolean,'default': false },
         initials        : String,
         latitude        : { type: String, 'default': ''},
-        longitude       : { type: String, 'default': ''},
-        socketioID      : { type: String, 'default': '' }
+        longitude       : { type: String, 'default': ''}
     },
     creationDate    : { type: Date, 'default':Date.now }
 });
