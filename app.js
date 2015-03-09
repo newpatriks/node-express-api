@@ -7,8 +7,6 @@ var morgan            = require('morgan');
 var tokenManager      = require('./config/token_manager');
 var secret            = require('./config/secret');
 
-var server            = require('http').createServer(app);
-
 var allowCrossDomain  = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -24,11 +22,11 @@ var allowCrossDomain  = function(req, res, next) {
 };
 
 
-if ('development' == app.get('env')) {
+//if ('development' == app.get('env')) {
   app.use(allowCrossDomain);
   app.use(bodyParser());
   app.use(morgan());
-}
+//}
 
 // STARTUP SERVER
 app.listen(port);

@@ -20,7 +20,7 @@ var User = new Schema({
     access_token    : String,
     online          : { type: Boolean, default: true },
     advice_accepted : { type: Boolean, default: false },
-    instagram       : Object,
+    info       : Object,
     preferences     : {
         image           : String,
         description     : String,

@@ -9,63 +9,55 @@ var app             = require('../app');
 exports.register = function(req, res) {
     console.log(" - Register ");    
     // GET THE INFORMATION
-    var sn = req.body.social;
-    switch(sn) {
-        case 'instagram':
-            console.log("   · Using INSTAGRAM LOGIN");
-            var info    = req.body[sn];
-            // 1. CHECK DE [EMAIL] AND [SOCIAL]
-            if (info) {
-                db.userModel.findOne({ 'instagram.screen_name' : info.screen_name}, function(err, user) {
-                    if (err)
-                        return res.send(401, {message : err});
-                    if (!user) {
-                        // 2.1. IF !EXIST (IT'S NEW)
-                        // 2.1.1. REGISTER
-                        var user = new db.userModel();
-                        var seen = [];
-                        JSON.stringify(info, function(key, val) {
-                            if (val != null && typeof val == "object") {
-                                if (seen.indexOf(val) >= 0)
-                                    return
-                                seen.push(val)
-                            }
-                            return val;
-                        });
-                        user[sn] = seen[0];
-
-                        user.preferences.image          = user[sn].profile_image_url;
-                        user.preferences.description    = user[sn].description;
-                        user.preferences.name           = user[sn].name;
-
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        user.access_token = token;
-                        user.save();
-                        // 2.1.2. CREATE & RETURN TOKEN
-                        return res.send(200, { token : token });
+    var data = req.body.data;
+    // 1. CHECK [EMAIL] AND [SOCIAL]
+    if (data) {
+        db.userModel.findOne({ 'screen_name' : data.screen_name}, function(err, user) {
+            if (err)
+                return res.send(401, {message : err});
+            if (!user) {
+                // 2.1. IF !EXIST (IT'S NEW)
+                // 2.1.1. REGISTER
+                var userData = new db.userModel();
+                var seen = [];
+                JSON.stringify(data, function(key, val) {
+                    if (val != null && typeof val == "object") {
+                        if (seen.indexOf(val) >= 0)
+                            return
+                        seen.push(val)
                     }
-                    if (user) {
-                        console.log(".........This user already exist");
-                        var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
-                        db.userModel.update({ 'instagram.screen_name' : info.screen_name }, {'access_token' : token, 'online' : true}, function(err, result) {
-                            if (err) {
-                                console.log('Error updating: ' + err);
-                                //res.send({'error':'An error has occurred'});
-                            } else {
-                                console.log('' + result + ' document(s) updated');
-                                //res.send(user);
-                            }
-                        });
-                        return res.send(200, { token : token });
+                    return val;
+                });
+                userData.info = seen[0];
+
+                //user.preferences.image          = user[sn].profile_image_url;
+                //user.preferences.description    = user[sn].description;
+                //user.preferences.name           = user[sn].name;
+
+                var token = jwt.sign({id: userData._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                userData.access_token = token;
+                userData.save();
+                // 2.1.2. CREATE & RETURN TOKEN
+                return res.send(200, { token : token });
+            }
+            else
+            {
+                console.log(".........This user already exist");
+                var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: tokenManager.TOKEN_EXPIRATION });
+                db.userModel.update({ 'screen_name' : data.screen_name }, {'access_token' : token, 'online' : true}, function(err, result) {
+                    if (err) {
+                        console.log('Error updating: ' + err);
+                        //res.send({'error':'An error has occurred'});
+                    } else {
+                        console.log('' + result + ' document(s) updated');
+                        //res.send(user);
                     }
                 });
-            }else{
-                return res.send(400, { message : "The information needs to be in a proper scheme" });
+                return res.send(200, { token : token });
             }
-            break;
-
-        default:
-            return res.send(400, { message : "You need to log in with some social network" });
+        });
+    }else{
+        return res.send(400, { message : "The information needs to be in a proper scheme" });
     }
 }
 
